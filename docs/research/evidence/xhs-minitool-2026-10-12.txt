@@ -1,0 +1,1333 @@
+ 
+ 
+ 
+ 
+ 
+ 小工具容器能力清单 · 小红书 
+ 
+ 
+ 
+ 
+ 
+ 小红书 · 小工具开发者文档 
+ 小工具容器 · 能力清单 
+ 
+ 面向小工具开发者，说明小红书小工具容器内
+ 哪些 Web 能力可用、哪些不可用 ，以及容器提供的
+ 端能力 JS API （发笔记 / 存相册 / 本地缓存 / 文件系统 / 评论区）。 
+ 创作或改写小工具时，请先复制 小工具上传页提供的完整改写口令 ，交给 AI 助手按口令执行。
+ 
+ 
+ 适用 iOS / Android 双端（除注明外一致） · 最后更新 2026-09-22
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 目 录 
+ 
+ 1. 运行环境 
+ 
+ 2. 可用能力 
+ 
+ 2.1 页面与渲染 
+ 2.2 JS / CSS 兼容基线 
+ 2.3 媒体与文件 
+ 2.4 数据存储 
+ 2.5 交互 
+ 2.6 资源加载规则 
+ 
+ 
+ 
+ 3. 端能力 JS API 
+ 
+ 3.1 调用约定 
+ 3.2 API 一览 
+ 3.3 发布笔记 
+ 3.4 保存图片到相册 
+ 3.5 临时文件 
+ 3.6 客户端版本判断 
+ 3.7 小工具本地缓存 
+ 3.8 文件系统 
+ 3.9 发布评论 
+ 
+ 
+ 
+ 4. 不可用能力 
+ 
+ 4.1 禁用 Web API 
+ 4.2 禁用行为 
+ 4.3 移动端不支持 
+ 
+ 
+ 5. WebGL / 图形计算边界 
+ 6. 常见问题 FAQ 
+ 
+ 
+
+ 
+ 
+ 
+ 01 运行环境 
+ 
+ 小工具是运行在 受限沙箱环境 里的 纯 Web 应用（HTML / CSS / JS） ，请把它当作一个"能力受限的浏览器页面"来开发。
+ 
+
+ 
+ 📋 
+ 
+ 创作入口：使用小工具上传页的改写口令。 
+ 无论从零创作还是改写现有 H5，都应在上传页“第一步：调整为符合小红书规范的代码格式”中
+ 完整复制当前口令 并发送给工作区内的 AI 助手。AI 助手须按口令下载对应版本 Skill、
+ 解压到指定目录、读取 SKILL.md ，再对当前产物进行校验、修复和打包；完成后将生成的 zip
+ 用于上传页第二步。本能力清单用于解释容器边界， 不能代替上传页口令 ，也不要沿用手工保存的旧口令。
+ 
+ 
+
+ 
+ 
+ 技术栈 
+ 标准 Web 技术栈 
+ 使用标准 HTML / CSS / JS 与标准 Web API 开发，最终产物须符合 Chrome 61 兼容基线。 
+ 
+ 
+ 兼容性 
+ Android 8.1 / Chrome 61 
+ Android 端按出厂 Chrome / WebView 61 的最低能力交付；iOS 支持的额外能力仅作增强。 
+ 
+ 
+ 端能力 
+ JS API（window.xhs.miniTool） 
+ 
+ 容器自动注入 JS API SDK，可调用发布笔记、保存相册、写临时文件等端能力（详见 §3），无需自行引入脚本。
+ 
+ 
+ 
+ 沙箱 
+ 安全沙箱 
+ 容器对部分敏感 Web 能力做了限制（详见下文），并对文件选择、页面跳转等做了统一管控。 
+ 
+ 
+ 隔离 
+ 独立隔离 
+ 每个小工具拥有独立的存储与运行环境，小工具之间互相隔离、无法访问彼此数据，也无法互相通信。 
+ 
+ 
+ 离线 
+ 本地运行、不联网 
+ 
+ 小工具为 纯本地运行 ，所有页面、脚本、图片、字体等资源都必须打包在小工具内， 不支持任何网络请求 （详见 §4.2）。请将小工具设计为完全离线自包含。
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 02 可用能力 
+
+ 
+ 2.1 页面与渲染 
+ 
+ 
+ 
+ 
+ 能力 
+ 说明 
+ 
+ 
+ 
+ 
+ HTML / CSS / JS 
+ 支持 Chrome 61 基线内的标准能力；新语法、新 API 与现代 CSS 须转译、检测或降级，详见 §2.2 
+ 
+ 
+ 内联样式 
+ <style> 与 style="" 均可用 
+ 
+ 
+ 页面内脚本 
+ 页面自带的脚本可正常执行 
+ 
+ 
+ Canvas 2D 
+ canvas.getContext('2d') ，完整支持 
+ 
+ 
+ WebGL 
+ 
+ getContext('webgl' / 'webgl2') ，纯渲染可用（能力边界见 §5）
+ 
+ 
+ 
+ 文本选择 
+ 不限制 
+ 
+ 
+ 
+ 
+
+ 
+ 2.2 JS / CSS 兼容基线 
+ 
+ 小工具最低兼容 Android 8.1 出厂 Chrome / WebView 61 ，iOS 最低支持
+ iOS 18.4 。
+ 
+ 
+ 
+ JavaScript ：最终交付代码须编译到 ES2017 / Chrome 61 ；更高版本语法由构建工具转译。
+ 
+ 
+ CSS ：最终样式须兼容 Chrome 61 ；更高版本 CSS 只能作为增强，并保留基础样式。
+ 
+ 
+ 能力检测 ：使用 Chrome 61 基线外的高级 Web API 或 CSS 能力前，必须先检测是否支持；
+ 支持时启用增强，不支持时走降级路径。
+ 
+ 
+ 
+ 开发方式： 请复制小工具上传页提供的完整改写口令，让 AI 助手加载对应版本 Skill，
+ 并严格按照 SKILL.md 完成开发、兼容处理、校验和打包。具体开发规则以 Skill 为准。
+ 
+
+ 
+ 2.3 媒体与文件 
+ 
+ 
+ 
+ 
+ 能力 
+ 用法 
+ 说明 
+ 
+ 
+ 
+ 
+ 摄像头 
+ getUserMedia({ video }) 
+ 需用户在系统弹窗中授权 
+ 
+ 
+ 麦克风 
+ getUserMedia({ audio }) 
+ 需用户在系统弹窗中授权 
+ 
+ 
+ 选择图片 / 拍照 
+ <input type="file"> 
+ 系统选择器接管， 仅支持选择图片和视频 （无论 accept 如何设置） 
+ 
+ 
+ 音视频播放 
+ <video> / <audio> 
+ 支持内联播放 
+ 
+ 
+ 
+ 
+
+ 
+ 2.4 数据存储 
+ 
+ 
+ 
+ 
+ 能力 
+ 说明 
+ 
+ 
+ 
+ 
+ Storage JS API 
+ 
+ 推荐的小工具本地缓存方案；版本要求与判断见
+ §3.6 ，API 见 §3.7 
+ 
+ 
+ 
+ 文件系统 JS API 
+ 
+ 用于持久文件和二进制数据；客户端 9.49+ 可用，API 见
+ §3.8 
+ 
+ 
+ 
+ localStorage / sessionStorage / IndexedDB / Cookie / Cache API 
+ 仅作为未满足 §3.6 版本条件时的兼容降级方案 
+ 
+ 
+ 
+ 
+ 
+ ⚠️ 
+ 
+ 不要把浏览器自带存储当作可靠的持久化方案。 
+ 小工具容器无法保证 localStorage 、 sessionStorage 、
+ IndexedDB 、Cookie 或 Cache API 始终可用，也无法保证其数据持续有效。
+ 兼容低版本客户端时，所有读写都要做异常处理，并能容忍数据缺失、失效或被清理。
+ 客户端从低版本升级到支持 Storage JS API 的版本时，开发者需自行维护不同存储方案之间的数据迁移与一致性。
+ 
+ 
+ 
+ 数据仅属于当前小工具，其他小工具与外部无法访问。请勿假设数据永久持久化。 
+ 
+
+ 
+ 2.5 交互 
+ 
+ 
+ 
+ 
+ 能力 
+ 说明 
+ 
+ 
+ 
+ 
+ alert() / confirm() 
+ 可用，以原生 UI 展示 
+ 
+ 
+ 
+ 
+
+ 
+ 2.6 资源加载规则 
+ 
+ 小工具为本地运行、不联网，容器对页面 如何加载各类资源 有明确约束（对应浏览器
+ CSP 限制）。所有资源须打包在小工具内（下表"包内资源"），另按类型额外允许
+ data: / blob: 等内存来源。
+ 
+ 
+ 
+ 
+ 
+ 资源类型 
+ 允许的加载方式 
+ 不允许 
+ 
+ 
+ 
+ 
+ 脚本 <script> 
+ 
+ ✅ 引用包内脚本
+ <script src="./app.js"> （同源外链）
+ 
+ 
+ 🔴 内联 <script>...</script> 
+ 🔴 行内事件 onclick="..." 等、 javascript: URI 
+ 🔴 eval() / new Function() 、WebAssembly 
+ 🔴 外部域名脚本、 data: / blob: 脚本
+ 
+ 
+ 
+ 样式 <style> / <link> 
+ 
+ ✅ 内联 <style> 、 style="..." 行内样式 
+ ✅ 引用包内样式表
+ 
+ 
+ 🔴 外部域名样式表
+ 
+ 
+ 
+ 图片 <img> / CSS 背景图 
+ 
+ ✅ 包内图片
+ <img src="./a.png"> 
+ ✅ data: URI（base64 内嵌） 
+ ✅ blob: （ createObjectURL 内存对象，如选图预览）
+ 
+ 
+ 🔴 外部域名图片
+ 
+ 
+ 
+ 字体 @font-face 
+ ✅ 包内字体文件 
+ 🔴 外部域名字体 
+ 
+ 
+ iframe / object 
+ 🔴 全部禁止 
+ — 
+ 
+ 
+ 
+ 
+
+ 支持的文件类型 
+ 小工具包内仅支持以下文件类型： 
+ 
+ 
+ 
+ 
+ 文件类型 
+ 原因 
+ 
+ 
+ 
+ 
+ .html 
+ 小工具主体，必须有且只有一个入口文件 
+ 
+ 
+ .css 
+ 样式文件，虽然口令要求内联，但不排除用户分开放 
+ 
+ 
+ .js 
+ 脚本文件，同上 
+ 
+ 
+ .png / .jpg / .jpeg / .gif / .webp / .svg 
+ 图片资源，内联 base64 太大时用户可能分开放 
+ 
+ 
+ .woff / .woff2 
+ 字体文件，本地字体场景 
+ 
+ 
+ .json 
+ 静态数据文件，部分小工具需要读取本地配置数据 
+ 
+ 
+ 
+ 
+
+ 实践要点 
+ 
+ 
+ 脚本必须外置 ：容器禁止内联脚本与行内事件处理器，请把 JS
+ 写进包内 .js 文件用 <script src> 
+ 引入，事件绑定改用 addEventListener （不要用
+ onclick= 属性）。
+ 
+ 
+ 样式可内联 ： <style> 和
+ style="..." 都能用，无需外置。
+ 
+ 
+ 选图预览用 <img src> 配 data: 或
+ blob: 均可显示（如
+ FileReader.readAsDataURL 或
+ URL.createObjectURL ）。
+ 
+ 
+ 
+ 💡 
+ 
+ 外部 CDN 一律加载不到，所有资源请 全部打包进小工具 。
+ 
+ 
+ 
+
+ 
+ 
+ 03 端能力 JS API 
+ 
+ 除标准 Web 能力外，容器会 自动注入 JS API SDK，小工具可通过
+ window.xhs.miniTool.* 调用 App 原生能力：发布笔记、保存图片到相册、
+ 本地缓存、文件读写和发布评论。 无需在包内引入任何 SDK 脚本 。
+ 
+
+ 
+ 3.1 调用约定 
+ 
+ 
+ 
+ 
+ 项 
+ 规则 
+ 
+ 
+ 
+ 
+ 唯一入口 
+ 
+ 端能力只能通过本文公开的
+ window.xhs.miniTool.<apiName>(options) 调用；未列出的能力不受支持
+ 
+ 
+ 
+ Promise / 回调 
+ 
+ 传入 success / fail /
+ complete 任一回调时返回 undefined ；都不传则返回
+ Promise 
+ 
+ 
+ 
+ 成功 
+ 
+ resolve / success 收到结果对象，含
+ errMsg: "<api>:ok" 及该 API 的业务字段
+ 
+ 
+ 
+ 失败 
+ 
+ reject / fail 收到
+ { errMsg: "<api>:fail ...", errCode? } ；参数不合法时会在本地直接失败，不上行
+ 
+ 
+ 
+ 参数校验 
+ 
+ SDK 上行前按 JSON Schema 校验，Native 侧用同一份 Schema 再校验一次： 表中未声明的字段不要传 
+ 
+ 
+ 
+ 可用性判断 
+ 
+ 调用前用 window.xhs && window.xhs.miniTool 判空，并为未注入的环境准备降级路径
+ 
+ 
+ 
+ 
+ 
+ const miniTool = window.xhs && window.xhs.miniTool;
+if (!miniTool) return; // 当前环境未注入端能力
+
+// Promise 形态
+try {
+ await miniTool.saveImageToPhotosAlbum({ filePath });
+} catch (err) {
+ console.log(err.errMsg); // "saveImageToPhotosAlbum:fail ..."
+}
+
+// 回调形态（返回 undefined）
+miniTool.saveImageToPhotosAlbum({
+ filePath,
+ success: (res) => console.log(res.errMsg),
+ fail: (err) => console.log(err.errMsg),
+ complete: () => {},
+}); 
+
+ 
+ 3.2 API 一览 
+ 
+ 
+ 
+ 
+ API 
+ 能力 
+ 可替代 / 适用场景 
+ 形态 
+ 
+ 
+ 
+ 
+ postNote 
+ 唤起笔记发布页，带入标题 / 正文 / 图片 / 视频 
+ 网页无法直接发布笔记时使用 
+ 异步 
+ 
+ 
+ saveImageToPhotosAlbum 
+ 保存图片到系统相册 
+ 替代 <a download> / Blob 下载保存图片 
+ 异步 
+ 
+ 
+ writeTempFile 
+ 把 base64 数据写成容器内临时文件，换取 filePath 
+ 需要向其他端 API 传本地路径时使用 
+ 异步 
+ 
+ 
+ getLaunchOptions 
+ 异步获取客户端启动参数 
+ 读取 miniToolEnv.buildVersion 做客户端版本判断 
+ 异步 
+ 
+ 
+ 
+ setStorage / getStorage / 
+ getStorageInfo / removeStorage / clearStorage 
+ 
+ 小工具本地缓存（版本要求见 §3.6 ） 
+ 替代 localStorage / IndexedDB / Cookie / Cache API 
+ 异步 
+ 
+ 
+ 
+ saveFile / writeFile / 
+ appendFile / readFile / readDir / 
+ statFile / unlink / mkdir / 
+ getFileStorageInfo 
+ 
+ 小工具本地文件的保存、读写、查询与管理 
+ 持久文件、二进制数据和大文件分片读写（客户端 9.49+） 
+ 异步 
+ 
+ 
+ interactionOpenApi 
+ 携带评论草稿打开评论编辑器 
+ 分享小工具生成的文本或图片（客户端 9.49+） 
+ 异步 
+ 
+ 
+ 
+ 
+ 
+ 💡 
+ 
+ 媒体类字段（图片 / 视频 / 封面）只接受 data: base64
+ 或本地文件路径（容器不联网， 网络地址不可用 ）。体积较大的 base64
+ 建议先用 writeTempFile 换成 filePath 再传。
+ 
+ 
+
+ 
+ 3.3 postNote — 发布笔记 
+ 唤起 App 笔记发布页，并带入小工具产出的内容与媒体。用户在发布页可继续编辑或取消。 
+ 
+ 
+ 
+ 
+ 字段 
+ 类型 
+ 必填 
+ 说明 
+ 
+ 
+ 
+ 
+ title 
+ string 
+ 否 
+ 标题，最长 20 字 
+ 
+ 
+ content 
+ string 
+ 否 
+ 正文，最长 1000 字 
+ 
+ 
+ pageType 
+ string 
+ 否 
+ 
+ 页面类型： video_publish / photo_publish /
+ slides_edit （客户端 9.43+）
+ 
+ 
+ 
+ mediaInfo 
+ object 
+ 是 
+ 媒体信息，下列三种资源 至少传一种，可同时传 
+ 
+ 
+ mediaInfo.image_resources 
+ { url }[] 
+ 否 
+ 图片，1–18 张； url 为 base64 或本地路径 
+ 
+ 
+ mediaInfo.video_resources 
+ { video_url, cover_url? } 
+ 否 
+ 单个视频， cover_url 为可选封面 
+ 
+ 
+ mediaInfo.live_photo_sources 
+ { url, video_url }[] 
+ 否 
+ 
+ 实况照片，1–18 组； url 为封面， video_url 
+ 为视频（客户端 9.43+）
+ 
+ 
+ 
+ 
+ 
+ // 图文笔记
+await window.xhs.miniTool.postNote({
+ title: "我的作品",
+ content: "用小工具生成的",
+ pageType: "photo_publish",
+ mediaInfo: {
+ image_resources: [{ url: "data:image/png;base64,iVBORw0KGgo..." }],
+ },
+});
+
+// 视频笔记
+await window.xhs.miniTool.postNote({
+ pageType: "video_publish",
+ mediaInfo: {
+ video_resources: { video_url: videoPath, cover_url: coverPath },
+ },
+});
+
+// 实况笔记（客户端 9.43+）
+await window.xhs.miniTool.postNote({
+ pageType: "slides_edit",
+ mediaInfo: {
+ live_photo_sources: [{ url: coverPath, video_url: videoPath }],
+ },
+}); 
+ 
+ ⚠️ 
+ 
+ 成功回调只代表 发布页已被唤起并由用户点击发布 ，不代表笔记最终审核通过。请勿依赖它做强一致的业务状态。
+ 
+ 
+
+ 
+ 3.4 saveImageToPhotosAlbum — 保存图片到相册 
+ 
+ 
+ 
+ 
+ 字段 
+ 类型 
+ 必填 
+ 说明 
+ 
+ 
+ 
+ 
+ filePath 
+ string 
+ 是 
+ 
+ 本地图片： data: base64 或
+ writeTempFile 返回的路径； 不支持 
+ http(s):// 网络地址
+ 
+ 
+ 
+ 
+ 
+ // Canvas 导出直接保存
+const dataUrl = canvas.toDataURL("image/png");
+await window.xhs.miniTool.saveImageToPhotosAlbum({ filePath: dataUrl }); 
+ 
+ 需由用户主动操作（点击等）触发，首次调用可能弹出系统相册权限弹窗；用户拒绝授权会走失败回调。 
+ 大图建议先 writeTempFile 落成文件再保存，避免超长 base64 上行。 
+ 
+
+ 
+ 3.5 writeTempFile — base64 转临时文件 
+ 
+ 把内存里的 base64（Canvas 导出、选图预览结果等）写成容器内的临时文件，换取可传给其他 JS API 的
+ filePath 。
+ 
+ 
+ 
+ 
+ 
+ 字段 
+ 类型 
+ 必填 
+ 说明 
+ 
+ 
+ 
+ 
+ data 
+ string 
+ 是 
+ base64 数据（支持带 data: 前缀的 data URI） 
+ 
+ 
+ filePath （返回） 
+ string 
+ — 
+ 写入后的临时文件路径 
+ 
+ 
+ 
+ 
+ const { filePath } = await window.xhs.miniTool.writeTempFile({
+ data: canvas.toDataURL("image/png"),
+});
+
+await window.xhs.miniTool.saveImageToPhotosAlbum({ filePath });
+// 或带入发布页
+await window.xhs.miniTool.postNote({
+ mediaInfo: { image_resources: [{ url: filePath }] },
+}); 
+ 
+ 返回的是 临时文件 ，不保证长期有效，请即用即弃，不要持久化保存该路径。 
+ 仅支持常见图片 / 视频类型（png、jpeg、webp、gif、mp4），其他类型会失败。 
+ 
+
+ 
+ 3.6 客户端版本判断 
+ 
+ 💡 
+ 
+ buildVersion 的末 3 位是编译 / 打包序号，判断客户端版本时必须忽略。
+ 例如 9462004 表示客户端 9.46.2 、编译序号 004 。
+ 
+ 
+ 
+ window.xhs 、 launchOptions 、 miniToolEnv 和
+ buildVersion 都可能缺失，同步读取时必须逐级判空。同步值不存在时，
+ 在确认 window.xhs.miniTool.getLaunchOptions 是函数后，再异步获取客户端值。
+ 两种方式都无法取到版本号时，按不支持 Storage JS API 处理。
+ 
+ function readBuildVersion(launchOptions) {
+ const miniToolEnv = launchOptions && launchOptions.miniToolEnv;
+ return Number(miniToolEnv && miniToolEnv.buildVersion) || 0;
+}
+
+async function getBuildVersion() {
+ const xhs = window.xhs;
+ const syncBuildVersion = readBuildVersion(xhs && xhs.launchOptions);
+ if (syncBuildVersion) return syncBuildVersion;
+
+ const miniTool = xhs && xhs.miniTool;
+ if (!miniTool || typeof miniTool.getLaunchOptions !== "function") return 0;
+
+ try {
+ const launchOptions = await miniTool.getLaunchOptions();
+ return readBuildVersion(launchOptions);
+ } catch (error) {
+ return 0;
+ }
+}
+
+function getClientVersion(buildVersion) {
+ // 例如 9462004 / 1000 取整后为 9462，即客户端 9.46.2
+ return Math.floor(buildVersion / 1000);
+}
+
+function isClientVersionAtLeast(buildVersion, minimumClientVersion) {
+ return getClientVersion(buildVersion) >= minimumClientVersion;
+} 
+ 
+ 3.7 Storage — 小工具本地缓存 
+ 
+ 💡 
+ 
+ 客户端满足 §3.6 的版本条件时，使用 Storage JS API 持久化业务数据。
+ 未满足版本条件时可按需降级到浏览器存储，但必须容忍写入失败或数据丢失。
+ 
+ 
+ const STORAGE_MIN_CLIENT_VERSION = 9460; // 客户端 9.46.0
+
+async function setLocalData(key, data) {
+ let serializedData;
+ try {
+ serializedData = JSON.stringify(data);
+ } catch (error) {
+ return false;
+ }
+ if (typeof serializedData !== "string") return false;
+
+ const buildVersion = await getBuildVersion();
+ const miniTool = window.xhs && window.xhs.miniTool;
+
+ if (
+ isClientVersionAtLeast(buildVersion, STORAGE_MIN_CLIENT_VERSION) &&
+ miniTool &&
+ typeof miniTool.setStorage === "function"
+ ) {
+ try {
+ await miniTool.setStorage({ key, data: serializedData });
+ return true;
+ } catch (error) {
+ return false;
+ }
+ }
+
+ // 仅用于兼容低版本客户端；容器不保证其可用性或持久性
+ try {
+ localStorage.setItem(key, serializedData);
+ return true;
+ } catch (error) {
+ return false;
+ }
+} 
+ 
+ 调用方必须处理 setLocalData 返回 false 的情况，
+ 不能假设数据已成功持久化。
+ 
+ 
+ 
+ 
+ 
+ API 
+ 参数 
+ 结果 / 说明 
+ 
+ 
+ 
+ 
+ setStorage 
+ key: string 、 data: string 、 encrypt?: boolean 
+ 写入或覆盖缓存； data 必须是 JSON 字符串 
+ 
+ 
+ getStorage 
+ key: string 、 encrypt?: boolean 
+ 返回 { data } ； data 为 JSON 字符串， encrypt 须与写入时一致 
+ 
+ 
+ getStorageInfo 
+ 无业务参数 
+ 返回 { keys, currentSize, limitSize } ，容量单位为 KB 
+ 
+ 
+ removeStorage 
+ key: string 
+ 删除指定缓存 
+ 
+ 
+ clearStorage 
+ 无业务参数 
+ 清空当前小工具的全部缓存 
+ 
+ 
+ 
+ 
+ 
+ 单个 key 最大 1 MB，当前小工具全部缓存最大 10 MB。 
+ data 只支持 JSON 字符串。对象、数组等数据必须先用 JSON.stringify 序列化；读取后再用 JSON.parse 解析。 
+ encrypt 默认为 false ；读取时必须与写入时保持一致。 
+ 这些 API 同时支持 Promise 与 success / fail / complete 回调。 
+ 
+ await window.xhs.miniTool.setStorage({
+ key: "profile",
+ data: JSON.stringify({ nickname: "小红薯" }),
+});
+
+const { data } = await window.xhs.miniTool.getStorage({ key: "profile" });
+const profile = data === null ? null : JSON.parse(data);
+const { keys, currentSize, limitSize } = await window.xhs.miniTool.getStorageInfo();
+
+await window.xhs.miniTool.removeStorage({ key: "profile" });
+await window.xhs.miniTool.clearStorage(); 
+
+ 
+ 3.8 文件系统 
+ 
+ 💡 
+ 
+ 文件系统 API 需要客户端 9.49+ 。可复用 §3.6 的
+ getBuildVersion 与 isClientVersionAtLeast ，以
+ 9490 作为最低客户端版本判断。
+ 
+ 
+ 
+ 文件和二进制数据使用文件系统保存。持久目录根路径由
+ launchOptions.miniToolEnv.userDataPath 提供；请只在该路径后拼接相对路径，
+ 不要硬编码、解析或改写端上返回的文件句柄。
+ 
+ 
+ 
+ 
+ 
+ API 
+ 参数 
+ 结果 / 说明 
+ 
+ 
+ 
+ 
+ saveFile 
+ tempFilePath: string 、 filePath?: string | null 
+ 将临时文件移动到持久目录，返回 { savedFilePath } 
+ 
+ 
+ writeFile 
+ filePath: string 、 data: string 、 encoding: "utf8" | "base64" 
+ 覆盖写入，返回 { writtenBytes } 
+ 
+ 
+ appendFile 
+ filePath: string 、 data: string 、 encoding: "utf8" | "base64" 
+ 向文件末尾追加，返回 { writtenBytes } 
+ 
+ 
+ readFile 
+ filePath: string 、 encoding: "utf8" | "base64" 、 position?: number 、 length?: number 
+ 读取一个文件分片，返回 { data, bytesRead, eof } 
+ 
+ 
+ readDir 
+ dirPath: string 
+ 读取目录直接子项，返回 { files, truncated } 
+ 
+ 
+ statFile 
+ filePath: string 
+ 读取文件或目录信息，返回 { size, lastModified, isDir } 
+ 
+ 
+ unlink 
+ filePath: string 
+ 删除持久目录中的文件 
+ 
+ 
+ mkdir 
+ dirPath: string 、 recursive?: boolean 
+ 创建持久文件目录 
+ 
+ 
+ getFileStorageInfo 
+ 无业务参数 
+ 返回 { usedBytes, limitBytes, fileCount, tmpUsedBytes, writeChunkMaxBytes, readChunkMaxBytes } 
+ 
+ 
+ 
+ 
+ const miniTool = window.xhs && window.xhs.miniTool;
+const launchOptions = await miniTool.getLaunchOptions();
+const userDataPath = launchOptions.miniToolEnv.userDataPath;
+const filePath = userDataPath + "/drafts/note.json";
+
+await miniTool.writeFile({
+ filePath,
+ data: JSON.stringify({ title: "草稿" }),
+ encoding: "utf8",
+});
+
+const { data } = await miniTool.readFile({
+ filePath,
+ encoding: "utf8",
+}); 
+ 
+ writeFile 覆盖写入， appendFile 追加写入。大文件由业务自行分片：第一片用 writeFile ，后续片串行调用 appendFile 。 
+ 分片大小以 getFileStorageInfo 返回的 writeChunkMaxBytes 和 readChunkMaxBytes 为准，不要硬编码。 
+ 图片和视频渲染时直接使用文件句柄作为 img.src 、 video.src 或 CSS 资源；需要文件字节时才使用 readFile 。 
+ usr 是本地工作区而非备份空间。它不随容器关闭清空，但卸载、清数据或包清理后仍可能丢失，重要数据应可重建或引导用户导出。 
+ 
+
+ 
+ 3.9 interactionOpenApi — 发布评论 
+ 
+ 💡 
+ 
+ 评论区能力需要客户端 9.49+ ，并应由用户点击等主动操作触发。
+ 
+ 
+ 
+ 用于唤起评论区并携带评论草稿；草稿字段遵循评论侧契约。容器会统一关闭小工具后再拉起评论区。
+ 
+ 
+ 
+ 
+ 
+ 字段 
+ 类型 
+ 必填 
+ 说明 
+ 
+ 
+ 
+ payload object 是 评论草稿；由评论侧定义字段 
+ payload.action string 按评论侧契约 发布评论时使用 post_comment 
+ payload.content string 否 评论文本 
+ payload.media_bean array 否 有序图片列表；媒体路径使用本地文件句柄 
+ payload.miniToolSnapshotInfo string 否 小工具附加状态的 JSON 字符串，最大 2KB；超限时该字段无效 
+ saveToAlbum boolean 否 是否将 payload 中的图片同步保存到相册，默认 true 
+ 
+ 
+ 
+ const result = await window.xhs.miniTool.interactionOpenApi({
+ payload: {
+ action: "post_comment",
+ content: "快来和我 PK！",
+ media_bean: [{
+ media_type: "image",
+ cover_image_url: imageFilePath,
+ }],
+ miniToolSnapshotInfo: JSON.stringify({ page: "result" }),
+ },
+ saveToAlbum: true,
+});
+
+// { routed, savedToAlbum, albumFailReason? } 
+ 
+ 目前仅支持图片，使用 { media_type: "image", cover_image_url } ；视频和实况图不支持。 
+ 媒体路径必须是容器可访问的本地文件句柄；网络 URL、 data: URI 和绝对路径不可用。 
+ miniToolSnapshotInfo 有效时，用户从评论区重新打开小工具可读取该数据，用于恢复对应业务状态；恢复逻辑由开发者自行实现。 
+ routed 表示评论侧路由是否成功。请求保存相册但失败时，失败原因会通过可选字段 albumFailReason 返回。 
+ 
+ 
+
+ 
+ 
+ 04 不可用能力 
+ 
+ 以下能力在容器内 已被禁用 ，调用会失败（抛出异常、返回空值或被拦截），请勿使用。
+ 
+
+ 
+ 4.1 已禁用的 Web API 
+ 
+ 
+ 
+ 
+ 分类 
+ 能力 
+ 
+ 
+ 
+ 
+ 定位 
+ 地理定位 navigator.geolocation 
+ 
+ 
+ 剪贴板 
+ 
+ navigator.clipboard 、 execCommand('copy'/'cut'/'paste') 
+ 
+ 
+ 
+ 硬件连接 
+ 蓝牙、USB、HID、串口 
+ 
+ 
+ 传感器 
+ 加速度计、陀螺仪、磁力计、环境光、设备运动 / 朝向 
+ 
+ 
+ 实时通信 
+ WebRTC、WebSocket、EventSource（SSE） 
+ 
+ 
+ 后台运行 
+ Web Worker、SharedWorker、Service Worker 
+ 
+ 
+ 屏幕 
+ 屏幕共享、全屏 requestFullscreen （全屏由容器统一管理） 
+ 
+ 
+ 设备信息 
+ 电池状态、网络信息、媒体设备枚举 
+ 
+ 
+ 存储进阶 
+ 持久化存储、跨域存储访问 
+ 
+ 
+ 凭据 
+ WebAuthn / navigator.credentials 、Web Locks 
+ 
+ 
+ 窗口 
+ 
+ window.open （弹新窗口）、 window.prompt 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 4.2 已禁用的行为 
+ 
+ 
+ 
+ 
+ 行为 
+ 说明 
+ 
+ 
+ 
+ 
+ 网络请求 
+ 
+ fetch / XMLHttpRequest 、加载外部图片 /
+ 字体 / 媒体等一切联网请求。小工具纯本地运行，所有资源须打包在内
+ 
+ 
+ 
+ 动态执行代码 
+ eval() 、 new Function() 
+ 
+ 
+ WebAssembly 
+ WASM 编译执行（依赖 WASM 的库无法运行，见 §5） 
+ 
+ 
+ iframe 
+ 页面内嵌 iframe / 被外部页面嵌入 
+ 
+ 
+ 表单跳转提交 
+ <form> 提交跳转 
+ 
+ 
+ 插件 
+ Flash 等浏览器插件 
+ 
+ 
+ 文件下载 
+ 
+ a[download] 、blob 下载等；保存图片请用
+ saveImageToPhotosAlbum （见 §3.4）
+ 
+ 
+ 
+ 打开外链 / 新窗口 
+ target="_blank" 、跳转站外 
+ 
+ 
+ 跳转其他小工具 
+ 小工具间互相跳转 
+ 
+ 
+ 长按菜单 
+ 已禁用 
+ 
+ 
+ 
+ 
+
+ 
+ 4.3 移动端不支持 
+ 
+ 以下能力移动端 WebView 本身不支持，无法使用：支付
+ PaymentRequest 、系统通知 / 推送、NFC、MIDI、XR / AR /
+ VR、后台同步 / 下载、PWA 安装、窗口管理、指针 / 键盘锁定等。
+ 
+ 
+
+ 
+ 
+ 05 WebGL / 图形计算边界 
+ 纯 WebGL 渲染可用，但组合能力受限： 
+ 
+ 
+ 
+ 
+ 场景 
+ 是否可用 
+ 
+ 
+ 
+ 
+ 本地资源 / Canvas / 内存对象作为纹理 
+ ✅ 可用 
+ 
+ 
+ 外部域名图片作为纹理 
+ 
+ 🔴 不可用（不支持网络请求，纹理须打包在内）
+ 
+ 
+ 
+ 依赖 WASM 的加速库（如 Draco / Basis / ONNX / 抠图算法库） 
+ 🔴 不可用 
+ 
+ 
+ 依赖 Worker 的离屏渲染（OffscreenCanvas + Worker） 
+ 🔴 不可用 
+ 
+ 
+ SharedArrayBuffer 多线程 
+ 🔴 不可用 
+ 
+ 
+ 
+ 
+ 
+ WebGL 适合用打包在小工具内的资源做本地渲染；需要 AI
+ 图像处理等重计算的场景无法支持（既不能联网也不能跑 WASM 模型）。
+ 
+ 
+
+ 
+ 
+ 06 常见问题 FAQ 
+
+ 
+ 创作或改写小工具应该从哪里开始？ 
+ 
+ 从小工具上传页开始。在“第一步：调整为符合小红书规范的代码格式”中完整复制改写口令，
+ 发送给工作区内的 AI 助手执行。口令会指导 AI 下载当前版本 Skill、读取
+ SKILL.md 、校验和修复代码并打包；不要只把本页能力清单当作改写提示词。
+ 
+ 
+
+ 
+ 
+ <input type="file" accept="video/*"> 为什么只能选图片？
+ 
+ 
+ 出于安全考虑，文件选择仅支持图片和视频，无论 accept 如何设置，此限制不可更改。
+ 
+ 
+
+ 
+ 页面里的 <script> 不执行 / 报 CSP 错误？ 
+ 
+ 容器禁止内联脚本与行内事件处理器（ onclick="..." ）。请把 JS
+ 放进包内 .js 文件用
+ <script src="./app.js"> 引入，事件用
+ addEventListener 绑定。详见 §2.6。
+ 
+ 
+
+ 
+ 能不能请求我自己的服务端接口 / 加载线上图片？ 
+ 
+ 不支持任何网络请求。所有页面、脚本、图片、字体、数据都必须打包在小工具内，按完全离线自包含来设计。
+ 
+ 
+
+ 
+ 需要服务端实时推送怎么办？ 
+ 
+ 不支持网络请求（含 WebSocket / SSE / WebRTC 与轮询），无法与服务端通信。
+ 
+ 
+
+ 
+ 第三方库报安全错误 / 无法运行？ 
+ 
+ 多半命中了 §4。请排查是否用到了 eval 、WebAssembly、Worker，或发起了网络请求，改用容器允许的等价方案。
+ 
+ 
+
+ 
+ 怎么把小工具生成的图片保存到相册 / 发成笔记？ 
+ 
+ 用容器注入的 JS API： writeTempFile 把 base64 换成
+ filePath ，再传给 saveImageToPhotosAlbum 或
+ postNote 。详见 §3。
+ 
+ 
+
+ 
+ window.xhs 是 undefined ？ 
+ 
+ 说明当前环境未注入端能力（如在普通浏览器中预览）。请用
+ window.xhs && window.xhs.miniTool 判空并提供降级路径，不要在无 SDK 时直接调用。
+ 
+ 
+
+ 
+ JS API 传网络图片地址为什么失败？ 
+ 
+ 容器不联网，媒体字段只接受 data: base64 或
+ writeTempFile 返回的本地路径。
+ 
+ 
+
+ 
+ 能不能调用文档里没列出的其他原生能力？ 
+ 
+ 不能。§3.2 列出的即为全部可用 JS API，未列出的能力不受支持。
+ 
+ 
+ 
+ 
+ 
+
+ © 小红书 · 小工具容器 · 能力清单 
+ 
+ 
+

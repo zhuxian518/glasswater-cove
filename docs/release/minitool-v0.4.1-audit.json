@@ -1,0 +1,53 @@
+{
+  "checkedAt": "2026-10-12T07:45:51.027Z",
+  "artifact": "琉璃海湾-v0.4.1-小红书上传包.zip",
+  "zipBytes": 1866861,
+  "uncompressedBytes": 1957990,
+  "sha256": "8bfd49f6f5dd84e380c561b5bbd10670c70b1bcd6f18a044c4ee708f8b1e6a3d",
+  "files": [
+    {
+      "name": "assets/badges-ab-v3.webp",
+      "bytes": 765498
+    },
+    {
+      "name": "assets/badges-cd-v3.webp",
+      "bytes": 757470
+    },
+    {
+      "name": "assets/cove-background-v2.jpg",
+      "bytes": 298142
+    },
+    {
+      "name": "assets/favicon.svg",
+      "bytes": 250
+    },
+    {
+      "name": "game.js",
+      "bytes": 104183
+    },
+    {
+      "name": "index.html",
+      "bytes": 6214
+    },
+    {
+      "name": "style.css",
+      "bytes": 26233
+    }
+  ],
+  "checks": "PASS: structure, allowed types, packaged references, forbidden APIs, classic script syntax, ZIP roundtrip; esbuild target ES2017 / Chrome61",
+  "skill": {
+    "packageVersion": "1.7.0",
+    "internalVersion": "1.6.0",
+    "source": "https://fe-static.xhscdn.com/minitool/20260923133933/minitool-zip-builder-1.7.0.skill",
+    "sha256": "8bd0f4fde976ec3e9784bebc9fd8d16270769c129b39098698fc58572716c305",
+    "instructionSource": "Owner-provided official 1.7.0 instruction, reused with authorization on 2026-10-12"
+  },
+  "pending": [
+    "创服平台模拟器验证",
+    "Android/iOS扫码验证",
+    "Chrome61实际运行与性能验证"
+  ],
+  "officialAudit": "Downloaded 1.7.0: Node directory audit PASS 7 files / 0 warnings; Python ZIP audit PASS 7 files / 0 warnings",
+  "tests": "49 tests passed in the preceding validation; no gameplay or runtime code changed during this instruction-source recheck.",
+  "payloadComparison": "All 7 files byte-identical to the tested v0.4.1 candidate; only ZIP metadata/name differ."
+}

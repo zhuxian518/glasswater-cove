@@ -1,0 +1,2 @@
+import {zipSync,strToU8} from 'fflate';import {readFile,writeFile} from 'node:fs/promises';
+const files={};for(const name of ['index.html','style.css','game.js','assets/cove-background-v2.jpg','assets/favicon.svg','assets/badges-ab-v3.webp','assets/badges-cd-v3.webp'])files[name]=await readFile('dist/'+name);await writeFile('琉璃海湾-v0.4.1.zip',zipSync(files,{level:9}));console.log('Packaged 琉璃海湾-v0.4.1.zip');

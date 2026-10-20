@@ -1,0 +1,14 @@
+/node_modules/
+/dist/
+/dist-minitool/
+/output/
+/release/
+/.codex/
+/.playwright-cli/
+/.env
+/.env.*
+!.env.example
+*.zip
+*.log
+.DS_Store
+Thumbs.db

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f2efdf"><link rel="icon" href="assets/favicon.svg"><title>琉璃海湾 · 撒网打鱼</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div class="app">
+  <aside class="journal">
+    <a class="brand" href="#" aria-label="琉璃海湾首页"><span class="brand-mark">≈</span> 潮汐手记 <span class="edition">VOL. 01</span></a>
+    <div class="intro"><span class="eyebrow">A LITTLE ESCAPE TO THE SEA</span><h1>把时间，<br>交给海湾。</h1><p>等一阵鱼群，撒一张好网。<br>不必每次满载，也总有新的期待。</p><div class="intro-line"></div><div class="location"><span>◌</span><div>琉璃海湾<small>晚潮 · 晴 · 轻风</small></div></div></div>
+    <div class="journal-bottom"><p>01 — 观察　02 — 等待　03 — 收获</p><span>一小段属于你的海上时光</span></div>
+  </aside>
+  <main class="game-shell">
+    <header class="game-top"><div class="game-identity"><span class="eyebrow">GLASSWATER COVE</span><h2>琉璃海湾<span>撒网打鱼</span></h2></div><div class="hud" aria-label="本次出海状态"><div class="hud-score"><small>今日鱼获</small><strong id="score">0</strong></div><div class="hud-time"><span id="theme-label">海草边</span><strong id="time">01:30</strong><div class="time-track"><i id="time-bar"></i></div></div></div><div class="top-actions"><button id="sound" class="icon-button" aria-label="开启声音" title="声音">♫</button><button id="pause" class="icon-button" aria-label="暂停游戏" title="暂停">Ⅱ</button></div></header>
+    <section class="sea-frame" aria-label="捕鱼区域">
+      <canvas id="sea" width="1000" height="1200" aria-label="海湾内的渔船、鱼群和渔网"></canvas>
+      <div class="depth-rail" aria-hidden="true"><span>浅水</span><span>中层</span><span>深水</span><span>海底</span></div>
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+      <div id="welcome" class="overlay"><div class="welcome-card"><span class="tiny-ornament">☀ &nbsp; 晚潮来信 &nbsp; ☀</span><h3>海风正好<br>出一趟海吧</h3><p>90秒，给自己一网小小的期待。</p><button id="start" class="primary">开始出海 <span>↗</span></button><button id="resume-save" class="text-button" hidden>继续上次的海上时光</button><div class="quick-guide"><span>← → 开船</span><span>按住下沉 · 松手兜鱼</span></div></div></div>
+      <div id="pause-panel" class="overlay" hidden><div class="modal-card"><span class="eyebrow">TAKE YOUR TIME</span><h3>海湾在等你</h3><p id="pause-copy">稍作休息，再接着收获。</p><button id="resume" class="primary">继续出海 <span>↗</span></button><button id="home" class="text-button">保存并回到岸边</button></div></div>
+      <div id="result" class="overlay" hidden><div class="modal-card result-card"><span class="eyebrow">A GOOD DAY AT SEA</span><h3>今天，也有收获</h3><div class="result-score"><strong id="result-score">0</strong><span>本次鱼获积分</span></div><p id="record-note"></p><div class="result-grid"><div><strong id="result-count">0</strong><span>只海洋伙伴</span></div><div><strong id="result-net">0</strong><span>最佳单网</span></div><div><strong id="result-found">0</strong><span>新发现</span></div></div><div id="result-species" class="result-species"></div><button id="again" class="primary">再出一趟海 <span>↗</span></button><button id="result-home" class="text-button">回到岸边</button><button id="save-card" class="text-button">保存这次收获</button></div></div>
+    </section>
+    <section class="controls"><div class="move-group"><button id="left" class="move-button" aria-label="向左开船">←</button><button id="right" class="move-button" aria-label="向右开船">→</button><small>移动渔船</small></div><div class="net-slots" id="net-slots" aria-label="一张渔网，收回后才能再抛"><i></i><span id="slot-label">渔网就绪</span></div><button id="cast" class="cast-button" aria-label="按住撒网，松手兜鱼"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 11L16 5 26 11 23 25H9Z M6 11H26 M10 9L13 25 M16 5V25 M22 9L19 25 M8 18H24"/></svg><span id="cast-label">按住撒网</span><small id="cast-hint">松手 · 收拢兜鱼</small></button></section>
+    <footer class="game-footer"><span id="tip">每一网，都有一点期待</span><button id="collection-open">海湾图鉴 <span id="collection-progress">0 / 20</span> ↗</button></footer>
+  </main>
+  <aside class="field-notes"><span class="eyebrow">FIELD NOTES / 海湾笔记</span><h3>好收获，<br>值得等一等。</h3><div class="note-item"><b>01</b><div><h4>选一个好位置</h4><p>开到鱼群前方，给游动留一点提前量。</p></div></div><div class="note-item"><b>02</b><div><h4>把握松手的时机</h4><p>撒网后自然下沉，松手收拢兜鱼。也可以继续等深层的伙伴。</p></div></div><div class="note-item"><b>03</b><div><h4>一张网，六格空间</h4><p>小鱼与虾占一格，蟹、章鱼和龙虾占两格。少量也是好收获。</p></div></div><div class="personal-record"><span>你的海湾纪录</span><strong id="best">0</strong><small>最高单局积分 · 本机保存</small></div><p class="observer-note">水母、海龟与珊瑚是观赏伙伴。<br>让它们自在地留在海湾吧。</p></aside>
+</div>
+<dialog id="collection"><div class="collection-head"><div><span class="eyebrow">LIFE UNDER THE SURFACE</span><h3>海湾图鉴</h3></div><button id="collection-close" class="icon-button" aria-label="关闭图鉴">×</button></div><p class="collection-intro">二十种可以遇见的收获。不同潮汐，遇见不同伙伴。</p><div id="creature-grid" class="creature-grid"></div><div class="environment-note"><b>还有六位观赏伙伴</b><p>水母 · 海马 · 海星 · 海胆 · 珊瑚 · 海龟</p><small>它们留在海湾里，不参与捕获和计分。</small></div></dialog>
+<script src="game.js"></script>
+</body></html>

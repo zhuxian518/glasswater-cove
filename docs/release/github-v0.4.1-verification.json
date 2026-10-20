@@ -1,0 +1,113 @@
+{
+  "date": "2026-10-20",
+  "version": "0.4.1",
+  "purpose": "Public source and frozen artifact archival",
+  "tests": {
+    "passed": 49,
+    "failed": 0
+  },
+  "browserBuild": "PASS",
+  "browserOfflineAudit": "PASS: 1955972 bytes",
+  "minitoolBuild": "PASS",
+  "officialAudit": {
+    "toolPackage": "1.7.0",
+    "toolInternalMetadata": "1.6.0",
+    "directory": "PASS: 7 files, 0 warnings",
+    "frozenZip": "PASS: 7 files, 0 warnings"
+  },
+  "frozenArtifacts": [
+    {
+      "name": "琉璃海湾-v0.4.1.zip",
+      "bytes": 1866248,
+      "sha256": "b0711abfb17717fb650f094ee1ed40ea58cf8db92825dae2cbd62d1d2e091465",
+      "matchesCurrentBuild": true,
+      "files": [
+        {
+          "name": "assets/badges-ab-v3.webp",
+          "bytes": 765498,
+          "sha256": "4728faae0a91dfe7ffce1d1f0c30b0d8ea692dd0a664e906993b047a6719af54"
+        },
+        {
+          "name": "assets/badges-cd-v3.webp",
+          "bytes": 757470,
+          "sha256": "15ad73ccc13d20722982b6a746a4cc70458bab0effef612ae46a5c9167531bdb"
+        },
+        {
+          "name": "assets/cove-background-v2.jpg",
+          "bytes": 298142,
+          "sha256": "6fc2d499fcbf3cc796d3b5267383188c64fff2f9b4467e9e8757c8c476a8f06d"
+        },
+        {
+          "name": "assets/favicon.svg",
+          "bytes": 250,
+          "sha256": "31b4d1eb72faba3c03a00b1c2fe385ac1420cba630673afb8d63bff0211fe314"
+        },
+        {
+          "name": "game.js",
+          "bytes": 102165,
+          "sha256": "326ba8d1964c32945ad11f915c4188477f527ef4429adb70ddff54b73d909df2"
+        },
+        {
+          "name": "index.html",
+          "bytes": 6214,
+          "sha256": "f78163b10e79c6252086506c585c3a705470de912e5758e377069b9378e46f67"
+        },
+        {
+          "name": "style.css",
+          "bytes": 26233,
+          "sha256": "82a6b65c014b104acb7120558ac98e98432888c75483a9a11de47c1875a05dea"
+        }
+      ]
+    },
+    {
+      "name": "琉璃海湾-v0.4.1-小红书上传包.zip",
+      "bytes": 1866861,
+      "sha256": "8bfd49f6f5dd84e380c561b5bbd10670c70b1bcd6f18a044c4ee708f8b1e6a3d",
+      "matchesCurrentBuild": true,
+      "files": [
+        {
+          "name": "assets/badges-ab-v3.webp",
+          "bytes": 765498,
+          "sha256": "4728faae0a91dfe7ffce1d1f0c30b0d8ea692dd0a664e906993b047a6719af54"
+        },
+        {
+          "name": "assets/badges-cd-v3.webp",
+          "bytes": 757470,
+          "sha256": "15ad73ccc13d20722982b6a746a4cc70458bab0effef612ae46a5c9167531bdb"
+        },
+        {
+          "name": "assets/cove-background-v2.jpg",
+          "bytes": 298142,
+          "sha256": "6fc2d499fcbf3cc796d3b5267383188c64fff2f9b4467e9e8757c8c476a8f06d"
+        },
+        {
+          "name": "assets/favicon.svg",
+          "bytes": 250,
+          "sha256": "31b4d1eb72faba3c03a00b1c2fe385ac1420cba630673afb8d63bff0211fe314"
+        },
+        {
+          "name": "game.js",
+          "bytes": 104183,
+          "sha256": "ef4118be9c83bd0ea0daac7a620d34e38e273d135dd0df2e6e604f6975236ac6"
+        },
+        {
+          "name": "index.html",
+          "bytes": 6214,
+          "sha256": "f78163b10e79c6252086506c585c3a705470de912e5758e377069b9378e46f67"
+        },
+        {
+          "name": "style.css",
+          "bytes": 26233,
+          "sha256": "82a6b65c014b104acb7120558ac98e98432888c75483a9a11de47c1875a05dea"
+        }
+      ]
+    }
+  ],
+  "pending": [
+    "Creator platform simulator",
+    "Android and iOS QR-code validation",
+    "Real native SDK storage, photo saving and sharing",
+    "Chrome61 runtime/performance",
+    "Physical iOS long-press and lifecycle checks"
+  ]
+}

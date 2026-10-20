@@ -1,0 +1,1844 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>小工具容器能力清单 · 小红书</title>
+    <style>
+      :root {
+        --red: #ff2442;
+        --red-soft: #ffe9ed;
+        --red-bg: #fff6f7;
+        --green: #12b76a;
+        --green-soft: #e8f8ef;
+        --amber: #f59e0b;
+        --amber-soft: #fff6e5;
+        --ink: #1f1f22;
+        --ink-2: #4a4a52;
+        --ink-3: #8a8a95;
+        --line: #ececf0;
+        --bg: #fafafa;
+        --card: #ffffff;
+        --radius: 18px;
+        --shadow: 0 8px 30px rgba(20, 20, 30, 0.06);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+          "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+        font-size: 15.5px;
+        line-height: 1.75;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      code,
+      pre,
+      .mono {
+        font-family:
+          "SF Mono", "JetBrains Mono", Menlo, Consolas, "Liberation Mono",
+          monospace;
+        font-size: 0.92em;
+      }
+
+      code {
+        background: #f4f4f7;
+        padding: 2px 6px;
+        border-radius: 6px;
+        color: #d63384;
+      }
+
+      pre.code {
+        margin: 14px 0;
+        padding: 16px 18px;
+        background: #1f1f22;
+        color: #e8e8ee;
+        border-radius: 14px;
+        overflow-x: auto;
+        line-height: 1.65;
+      }
+
+      pre.code code {
+        background: none;
+        padding: 0;
+        color: inherit;
+      }
+
+      /* ---------- Hero ---------- */
+      .hero {
+        padding: 88px 24px 60px;
+        text-align: center;
+        background:
+          radial-gradient(
+            1200px 500px at 50% -10%,
+            #ffd9df 0%,
+            rgba(255, 217, 223, 0) 60%
+          ),
+          linear-gradient(180deg, #fff 0%, #fafafa 100%);
+      }
+
+      .hero .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 14px;
+        background: var(--red-soft);
+        color: var(--red);
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+      }
+
+      .hero .eyebrow::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--red);
+      }
+
+      .hero h1 {
+        margin: 22px 0 14px;
+        font-size: clamp(32px, 4.6vw, 54px);
+        line-height: 1.15;
+        letter-spacing: -0.5px;
+        font-weight: 800;
+      }
+
+      .hero h1 span {
+        color: var(--red);
+      }
+
+      .hero p.lead {
+        max-width: 720px;
+        margin: 0 auto;
+        color: var(--ink-2);
+        font-size: clamp(15px, 1.5vw, 17px);
+      }
+
+      .hero .meta {
+        margin-top: 22px;
+        color: var(--ink-3);
+        font-size: 13px;
+      }
+
+      /* ---------- Layout ---------- */
+      .wrap {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 40px 24px 80px;
+        display: grid;
+        grid-template-columns: 220px minmax(0, 1fr);
+        gap: 48px;
+      }
+
+      /* ---------- TOC ---------- */
+      .toc {
+        position: sticky;
+        top: 24px;
+        align-self: start;
+        max-height: calc(100vh - 48px);
+        overflow: auto;
+        padding: 20px;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        font-size: 14px;
+      }
+
+      .toc .toc-title {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--ink-3);
+        letter-spacing: 1.5px;
+        margin-bottom: 12px;
+      }
+
+      .toc ol {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .toc li {
+        margin: 4px 0;
+      }
+
+      .toc a {
+        display: block;
+        padding: 6px 10px;
+        border-radius: 8px;
+        color: var(--ink-2);
+        text-decoration: none;
+        overflow-wrap: anywhere;
+        transition: all 0.15s ease;
+      }
+
+      .toc a:hover {
+        background: var(--red-bg);
+        color: var(--red);
+      }
+
+      .toc ol ol {
+        padding-left: 12px;
+        margin-top: 2px;
+      }
+
+      .toc ol ol a {
+        font-size: 13px;
+        color: var(--ink-3);
+        padding: 4px 10px;
+      }
+
+      /* ---------- Content ---------- */
+      .content {
+        min-width: 0;
+      }
+
+      section.block {
+        margin-bottom: 56px;
+        scroll-margin-top: 24px;
+      }
+
+      .block > h2 {
+        display: flex;
+        align-items: baseline;
+        gap: 14px;
+        margin: 0 0 6px;
+        font-size: 30px;
+        font-weight: 800;
+        letter-spacing: -0.3px;
+      }
+
+      .block > h2 .no {
+        color: var(--red);
+        font-family: "SF Mono", Menlo, monospace;
+        font-size: 22px;
+      }
+
+      .block > .desc {
+        margin: 0 0 26px;
+        color: var(--ink-2);
+        font-size: 15px;
+      }
+
+      .block h3 {
+        margin: 32px 0 14px;
+        font-size: 19px;
+        font-weight: 700;
+        color: var(--ink);
+        scroll-margin-top: 24px;
+      }
+
+      .block p {
+        margin: 12px 0;
+        color: var(--ink-2);
+      }
+
+      /* ---------- Feature cards ---------- */
+      .features {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        margin-top: 16px;
+      }
+
+      .feature {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 22px;
+        box-shadow: var(--shadow);
+      }
+
+      .feature .ft {
+        display: inline-block;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--red);
+        background: var(--red-soft);
+        padding: 3px 10px;
+        border-radius: 999px;
+        margin-bottom: 10px;
+      }
+
+      .feature h4 {
+        margin: 0 0 6px;
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .feature p {
+        margin: 0;
+        font-size: 14px;
+        color: var(--ink-2);
+      }
+
+      /* ---------- Table ---------- */
+      .tbl {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        overflow: hidden;
+        background: var(--card);
+        box-shadow: var(--shadow);
+        font-size: 14.5px;
+      }
+
+      .tbl th,
+      .tbl td {
+        text-align: left;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+
+      .tbl thead th {
+        background: var(--red-bg);
+        color: var(--ink);
+        font-weight: 700;
+        font-size: 14px;
+      }
+
+      .tbl tbody tr:last-child th,
+      .tbl tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      .tbl tbody tr:hover {
+        background: #fafafa;
+      }
+
+      .tbl td:first-child {
+        font-weight: 600;
+        color: var(--ink);
+        white-space: nowrap;
+      }
+
+      .tbl td .yes {
+        color: var(--green);
+        font-weight: 700;
+        margin-right: 4px;
+      }
+
+      .tbl td .no {
+        color: var(--red);
+        font-weight: 700;
+        margin-right: 4px;
+      }
+
+      /* “可用/不可用”表格里第一列自适应 */
+      .tbl.wide td:first-child {
+        white-space: normal;
+      }
+
+      /* ---------- Callout ---------- */
+      .callout {
+        display: flex;
+        gap: 14px;
+        padding: 16px 18px;
+        border-radius: 14px;
+        background: var(--amber-soft);
+        border: 1px solid #f5d17a;
+        margin: 20px 0;
+      }
+
+      .callout .ic {
+        flex: 0 0 auto;
+        font-size: 18px;
+      }
+
+      .callout .txt {
+        color: #78500b;
+        font-size: 14.5px;
+        line-height: 1.7;
+      }
+
+      .callout.info {
+        background: #eff6ff;
+        border-color: #bfdbfe;
+      }
+
+      .callout.info .txt {
+        color: #1e40af;
+      }
+
+      .callout.primary {
+        background: var(--red-bg);
+        border-color: #ffc2cc;
+      }
+
+      .callout.primary .txt {
+        color: var(--ink-2);
+      }
+
+      .callout.primary .txt b {
+        color: var(--red);
+      }
+
+      /* ---------- List ---------- */
+      ul.list,
+      ol.list {
+        padding-left: 22px;
+        margin: 12px 0;
+        color: var(--ink-2);
+      }
+
+      ul.list li,
+      ol.list li {
+        margin: 8px 0;
+      }
+
+      ul.list li b {
+        color: var(--ink);
+      }
+
+      /* ---------- FAQ ---------- */
+      .faq details {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 6px 20px;
+        margin-bottom: 12px;
+        box-shadow: var(--shadow);
+      }
+
+      .faq details[open] {
+        background: #fff;
+      }
+
+      .faq summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 14px 0;
+        font-weight: 700;
+        color: var(--ink);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .faq summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .faq summary::before {
+        content: "Q";
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        background: var(--red);
+        color: #fff;
+        font-family: "SF Mono", monospace;
+        font-size: 13px;
+        flex: 0 0 auto;
+      }
+
+      .faq summary::after {
+        content: "＋";
+        margin-left: auto;
+        color: var(--ink-3);
+        font-weight: 500;
+        font-size: 18px;
+      }
+
+      .faq details[open] summary::after {
+        content: "－";
+      }
+
+      .faq .answer {
+        padding: 6px 0 18px 34px;
+        color: var(--ink-2);
+        border-top: 1px dashed var(--line);
+      }
+
+      .faq .answer::before {
+        content: "A ";
+        color: var(--red);
+        font-family: "SF Mono", monospace;
+        font-weight: 700;
+      }
+
+      /* ---------- Footer ---------- */
+      footer {
+        text-align: center;
+        padding: 40px 24px 56px;
+        color: var(--ink-3);
+        font-size: 13px;
+        border-top: 1px solid var(--line);
+      }
+
+      /* ---------- Responsive ---------- */
+      @media (max-width: 920px) {
+        .wrap {
+          grid-template-columns: 1fr;
+          gap: 24px;
+          padding: 24px 18px 60px;
+        }
+        .toc {
+          position: static;
+          max-height: none;
+        }
+        .features {
+          grid-template-columns: 1fr;
+        }
+        .tbl {
+          font-size: 13.5px;
+        }
+        .tbl th,
+        .tbl td {
+          padding: 10px 12px;
+        }
+      }
+
+      /* 让长表格在窄屏可以横向滚动 */
+      .tbl-wrap {
+        overflow-x: auto;
+        border-radius: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ===================== HERO ===================== -->
+    <header class="hero">
+      <span class="eyebrow">小红书 · 小工具开发者文档</span>
+      <h1>小工具容器 · <span>能力清单</span></h1>
+      <p class="lead">
+        面向小工具开发者，说明小红书小工具容器内
+        <b>哪些 Web 能力可用、哪些不可用</b>，以及容器提供的
+        <b>端能力 JS API</b>（发笔记 / 存相册 / 本地缓存 / 文件系统 / 评论区）。<br />
+        创作或改写小工具时，请先复制<b>小工具上传页提供的完整改写口令</b>，交给 AI 助手按口令执行。
+      </p>
+      <div class="meta">
+        适用 iOS / Android 双端（除注明外一致） · 最后更新 2026-09-22
+      </div>
+    </header>
+
+    <!-- ===================== BODY ===================== -->
+    <div class="wrap">
+      <!-- 目录 -->
+      <aside class="toc">
+        <div class="toc-title">目 录</div>
+        <ol>
+          <li><a href="#s1">1. 运行环境</a></li>
+          <li>
+            <a href="#s2">2. 可用能力</a>
+            <ol>
+              <li><a href="#s2-1">2.1 页面与渲染</a></li>
+              <li><a href="#s2-2">2.2 JS / CSS 兼容基线</a></li>
+              <li><a href="#s2-3">2.3 媒体与文件</a></li>
+              <li><a href="#s2-4">2.4 数据存储</a></li>
+              <li><a href="#s2-5">2.5 交互</a></li>
+              <li><a href="#s2-6">2.6 资源加载规则</a></li>
+            </ol>
+          </li>
+          <li>
+            <a href="#s3">3. 端能力 JS API</a>
+            <ol>
+              <li><a href="#s3-1">3.1 调用约定</a></li>
+              <li><a href="#s3-2">3.2 API 一览</a></li>
+              <li><a href="#s3-3">3.3 发布笔记</a></li>
+              <li><a href="#s3-4">3.4 保存图片到相册</a></li>
+              <li><a href="#s3-5">3.5 临时文件</a></li>
+              <li><a href="#s3-6">3.6 客户端版本判断</a></li>
+              <li><a href="#s3-7">3.7 小工具本地缓存</a></li>
+              <li><a href="#s3-8">3.8 文件系统</a></li>
+              <li><a href="#s3-9">3.9 发布评论</a></li>
+            </ol>
+          </li>
+          <li>
+            <a href="#s4">4. 不可用能力</a>
+            <ol>
+              <li><a href="#s4-1">4.1 禁用 Web API</a></li>
+              <li><a href="#s4-2">4.2 禁用行为</a></li>
+              <li><a href="#s4-3">4.3 移动端不支持</a></li>
+            </ol>
+          </li>
+          <li><a href="#s5">5. WebGL / 图形计算边界</a></li>
+          <li><a href="#s6">6. 常见问题 FAQ</a></li>
+        </ol>
+      </aside>
+
+      <main class="content">
+        <!-- ============ 1. 运行环境 ============ -->
+        <section class="block" id="s1">
+          <h2><span class="no">01</span>运行环境</h2>
+          <p class="desc">
+            小工具是运行在<b>受限沙箱环境</b>里的<b>纯 Web 应用（HTML / CSS / JS）</b>，请把它当作一个"能力受限的浏览器页面"来开发。
+          </p>
+
+          <div class="callout primary">
+            <div class="ic">📋</div>
+            <div class="txt">
+              <b>创作入口：使用小工具上传页的改写口令。</b><br />
+              无论从零创作还是改写现有 H5，都应在上传页“第一步：调整为符合小红书规范的代码格式”中
+              <b>完整复制当前口令</b>并发送给工作区内的 AI 助手。AI 助手须按口令下载对应版本 Skill、
+              解压到指定目录、读取 <code>SKILL.md</code>，再对当前产物进行校验、修复和打包；完成后将生成的 zip
+              用于上传页第二步。本能力清单用于解释容器边界，<b>不能代替上传页口令</b>，也不要沿用手工保存的旧口令。
+            </div>
+          </div>
+
+          <div class="features">
+            <div class="feature">
+              <div class="ft">技术栈</div>
+              <h4>标准 Web 技术栈</h4>
+              <p>使用标准 HTML / CSS / JS 与标准 Web API 开发，最终产物须符合 Chrome 61 兼容基线。</p>
+            </div>
+            <div class="feature">
+              <div class="ft">兼容性</div>
+              <h4>Android 8.1 / Chrome 61</h4>
+              <p>Android 端按出厂 Chrome / WebView 61 的最低能力交付；iOS 支持的额外能力仅作增强。</p>
+            </div>
+            <div class="feature">
+              <div class="ft">端能力</div>
+              <h4>JS API（window.xhs.miniTool）</h4>
+              <p>
+                容器自动注入 JS API SDK，可调用发布笔记、保存相册、写临时文件等端能力（详见 §3），无需自行引入脚本。
+              </p>
+            </div>
+            <div class="feature">
+              <div class="ft">沙箱</div>
+              <h4>安全沙箱</h4>
+              <p>容器对部分敏感 Web 能力做了限制（详见下文），并对文件选择、页面跳转等做了统一管控。</p>
+            </div>
+            <div class="feature">
+              <div class="ft">隔离</div>
+              <h4>独立隔离</h4>
+              <p>每个小工具拥有独立的存储与运行环境，小工具之间互相隔离、无法访问彼此数据，也无法互相通信。</p>
+            </div>
+            <div class="feature">
+              <div class="ft">离线</div>
+              <h4>本地运行、不联网</h4>
+              <p>
+                小工具为<b>纯本地运行</b>，所有页面、脚本、图片、字体等资源都必须打包在小工具内，<b>不支持任何网络请求</b>（详见 §4.2）。请将小工具设计为完全离线自包含。
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ 2. 可用能力 ============ -->
+        <section class="block" id="s2">
+          <h2><span class="no">02</span>可用能力</h2>
+
+          <!-- 2.1 页面与渲染 -->
+          <h3 id="s2-1">2.1 页面与渲染</h3>
+          <div class="tbl-wrap">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th style="width: 26%">能力</th>
+                  <th>说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>HTML / CSS / JS</td>
+                  <td>支持 Chrome 61 基线内的标准能力；新语法、新 API 与现代 CSS 须转译、检测或降级，详见 §2.2</td>
+                </tr>
+                <tr>
+                  <td>内联样式</td>
+                  <td><code>&lt;style&gt;</code> 与 <code>style=""</code> 均可用</td>
+                </tr>
+                <tr>
+                  <td>页面内脚本</td>
+                  <td>页面自带的脚本可正常执行</td>
+                </tr>
+                <tr>
+                  <td>Canvas 2D</td>
+                  <td><code>canvas.getContext('2d')</code>，完整支持</td>
+                </tr>
+                <tr>
+                  <td>WebGL</td>
+                  <td>
+                    <code>getContext('webgl' / 'webgl2')</code>，纯渲染可用（能力边界见 §5）
+                  </td>
+                </tr>
+                <tr>
+                  <td>文本选择</td>
+                  <td>不限制</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 2.2 JS / CSS 兼容基线 -->
+          <h3 id="s2-2">2.2 JS / CSS 兼容基线</h3>
+          <p>
+            小工具最低兼容 <b>Android 8.1 出厂 Chrome / WebView 61</b>，iOS 最低支持
+            <b>iOS 18.4</b>。
+          </p>
+          <ul class="list">
+            <li>
+              <b>JavaScript</b>：最终交付代码须编译到 <b>ES2017 / Chrome 61</b>；更高版本语法由构建工具转译。
+            </li>
+            <li>
+              <b>CSS</b>：最终样式须兼容 <b>Chrome 61</b>；更高版本 CSS 只能作为增强，并保留基础样式。
+            </li>
+            <li>
+              <b>能力检测</b>：使用 Chrome 61 基线外的高级 Web API 或 CSS 能力前，必须先检测是否支持；
+              支持时启用增强，不支持时走降级路径。
+            </li>
+          </ul>
+          <p>
+            <b>开发方式：</b>请复制小工具上传页提供的完整改写口令，让 AI 助手加载对应版本 Skill，
+            并严格按照 <code>SKILL.md</code> 完成开发、兼容处理、校验和打包。具体开发规则以 Skill 为准。
+          </p>
+
+          <!-- 2.3 媒体与文件 -->
+          <h3 id="s2-3">2.3 媒体与文件</h3>
+          <div class="tbl-wrap">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th style="width: 20%">能力</th>
+                  <th style="width: 30%">用法</th>
+                  <th>说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>摄像头</td>
+                  <td><code>getUserMedia({ video })</code></td>
+                  <td>需用户在系统弹窗中授权</td>
+                </tr>
+                <tr>
+                  <td>麦克风</td>
+                  <td><code>getUserMedia({ audio })</code></td>
+                  <td>需用户在系统弹窗中授权</td>
+                </tr>
+                <tr>
+                  <td>选择图片 / 拍照</td>
+                  <td><code>&lt;input type="file"&gt;</code></td>
+                  <td>系统选择器接管，<b>仅支持选择图片和视频</b>（无论 accept 如何设置）</td>
+                </tr>
+                <tr>
+                  <td>音视频播放</td>
+                  <td><code>&lt;video&gt;</code> / <code>&lt;audio&gt;</code></td>
+                  <td>支持内联播放</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 2.4 数据存储 -->
+          <h3 id="s2-4">2.4 数据存储</h3>
+          <div class="tbl-wrap">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th style="width: 30%">能力</th>
+                  <th>说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Storage JS API</td>
+                  <td>
+                    推荐的小工具本地缓存方案；版本要求与判断见
+                    <a href="#s3-6">§3.6</a>，API 见 <a href="#s3-7">§3.7</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>文件系统 JS API</td>
+                  <td>
+                    用于持久文件和二进制数据；客户端 9.49+ 可用，API 见
+                    <a href="#s3-8">§3.8</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>localStorage / sessionStorage / IndexedDB / Cookie / Cache API</td>
+                  <td>仅作为未满足 <a href="#s3-6">§3.6</a> 版本条件时的兼容降级方案</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="callout">
+            <div class="ic">⚠️</div>
+            <div class="txt">
+              <b>不要把浏览器自带存储当作可靠的持久化方案。</b>
+              小工具容器无法保证 <code>localStorage</code>、<code>sessionStorage</code>、
+              <code>IndexedDB</code>、Cookie 或 Cache API 始终可用，也无法保证其数据持续有效。
+              兼容低版本客户端时，所有读写都要做异常处理，并能容忍数据缺失、失效或被清理。
+              客户端从低版本升级到支持 Storage JS API 的版本时，开发者需自行维护不同存储方案之间的数据迁移与一致性。
+            </div>
+          </div>
+          <ul class="list">
+            <li>数据仅属于当前小工具，其他小工具与外部无法访问。请勿假设数据永久持久化。</li>
+          </ul>
+
+          <!-- 2.5 交互 -->
+          <h3 id="s2-5">2.5 交互</h3>
+          <div class="tbl-wrap">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th style="width: 30%">能力</th>
+                  <th>说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>alert()</code> / <code>confirm()</code></td>
+                  <td>可用，以原生 UI 展示</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 2.6 资源加载规则 -->
+          <h3 id="s2-6">2.6 资源加载规则</h3>
+          <p>
+            小工具为本地运行、不联网，容器对页面<b>如何加载各类资源</b>有明确约束（对应浏览器
+            CSP 限制）。所有资源须打包在小工具内（下表"包内资源"），另按类型额外允许
+            <code>data:</code> / <code>blob:</code> 等内存来源。
+          </p>
+          <div class="tbl-wrap">
+            <table class="tbl wide">
+              <thead>
+                <tr>
+                  <th style="width: 18%">资源类型</th>
+                  <th>允许的加载方式</th>
+                  <th>不允许</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>脚本 <code>&lt;script&gt;</code></td>
+                  <td>
+                    <span class="yes">✅</span> 引用包内脚本
+                    <code>&lt;script src="./app.js"&gt;</code>（同源外链）
+                  </td>
+                  <td>
+                    <span class="no">🔴</span> 内联 <code>&lt;script&gt;...&lt;/script&gt;</code><br />
+                    <span class="no">🔴</span> 行内事件 <code>onclick="..."</code> 等、<code>javascript:</code> URI<br />
+                    <span class="no">🔴</span> <code>eval()</code> / <code>new Function()</code>、WebAssembly<br />
+                    <span class="no">🔴</span> 外部域名脚本、<code>data:</code> / <code>blob:</code> 脚本
+                  </td>
+                </tr>
+                <tr>
+                  <td>样式 <code>&lt;style&gt;</code> / <code>&lt;link&gt;</code></td>
+                  <td>
+                    <span class="yes">✅</span> 内联 <code>&lt;style&gt;</code>、<code>style="..."</code> 行内样式<br />
+                    <span class="yes">✅</span> 引用包内样式表
+                  </td>
+                  <td>
+                    <span class="no">🔴</span> 外部域名样式表
+                  </td>
+                </tr>
+                <tr>
+                  <td>图片 <code>&lt;img&gt;</code> / CSS 背景图</td>
+                  <td>
+                    <span class="yes">✅</span> 包内图片
+                    <code>&lt;img src="./a.png"&gt;</code><br />
+                    <span class="yes">✅</span> <code>data:</code> URI（base64 内嵌）<br />
+                    <span class="yes">✅</span> <code>blob:</code>（<code>createObjectURL</code> 内存对象，如选图预览）
+                  </td>
+                  <td>
+                    <span class="no">🔴</span> 外部域名图片
+                  </td>
+                </tr>
+                <tr>
+                  <td>字体 <code>@font-face</code></td>
+                  <td><span class="yes">✅</span> 包内字体文件</td>
+                  <td><span class="no">🔴</span> 外部域名字体</td>
+                </tr>
+                <tr>
+                  <td><code>iframe</code> / <code>object</code></td>
+                  <td><span class="no">🔴</span> 全部禁止</td>
+                  <td>—</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4 style="margin: 24px 0 10px; font-size: 16px">支持的文件类型</h4>
+          <p>小工具包内仅支持以下文件类型：</p>
+          <div class="tbl-wrap">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th style="width: 38%">文件类型</th>
+                  <th>原因</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>.html</code></td>
+                  <td>小工具主体，必须有且只有一个入口文件</td>
+                </tr>
+                <tr>
+                  <td><code>.css</code></td>
+                  <td>样式文件，虽然口令要求内联，但不排除用户分开放</td>
+                </tr>
+                <tr>
+                  <td><code>.js</code></td>
+                  <td>脚本文件，同上</td>
+                </tr>
+                <tr>
+                  <td><code>.png</code> / <code>.jpg</code> / <code>.jpeg</code> / <code>.gif</code> / <code>.webp</code> / <code>.svg</code></td>
+                  <td>图片资源，内联 base64 太大时用户可能分开放</td>
+                </tr>
+                <tr>
+                  <td><code>.woff</code> / <code>.woff2</code></td>
+                  <td>字体文件，本地字体场景</td>
+                </tr>
+                <tr>
+                  <td><code>.json</code></td>
+                  <td>静态数据文件，部分小工具需要读取本地配置数据</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4 style="margin: 24px 0 10px; font-size: 16px">实践要点</h4>
+          <ul class="list">
+            <li>
+              <b>脚本必须外置</b>：容器禁止内联脚本与行内事件处理器，请把 JS
+              写进包内 <code>.js</code> 文件用 <code>&lt;script src&gt;</code>
+              引入，事件绑定改用 <code>addEventListener</code>（不要用
+              <code>onclick=</code> 属性）。
+            </li>
+            <li>
+              <b>样式可内联</b>：<code>&lt;style&gt;</code> 和
+              <code>style="..."</code> 都能用，无需外置。
+            </li>
+            <li>
+              选图预览用 <code>&lt;img src&gt;</code> 配 <code>data:</code> 或
+              <code>blob:</code> 均可显示（如
+              <code>FileReader.readAsDataURL</code> 或
+              <code>URL.createObjectURL</code>）。
+            </li>
+          </ul>
+          <div class="callout info">
+            <div class="ic">💡</div>
+            <div class="txt">
+              外部 CDN 一律加载不到，所有资源请<b>全部打包进小工具</b>。
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ 3. 端能力 JS API ============ -->
+        <section class="block" id="s3">
+          <h2><span class="no">03</span>端能力 JS API</h2>
+          <p class="desc">
+            除标准 Web 能力外，容器会<b>自动注入</b> JS API SDK，小工具可通过
+            <code>window.xhs.miniTool.*</code> 调用 App 原生能力：发布笔记、保存图片到相册、
+            本地缓存、文件读写和发布评论。<b>无需在包内引入任何 SDK 脚本</b>。
+          </p>
+
+          <!-- 3.1 调用约定 -->
+          <h3 id="s3-1">3.1 调用约定</h3>
+          <div class="tbl-wrap">
+            <table class="tbl wide">
+              <thead>
+                <tr>
+                  <th style="width: 20%">项</th>
+                  <th>规则</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>唯一入口</td>
+                  <td>
+                    端能力只能通过本文公开的
+                    <code>window.xhs.miniTool.&lt;apiName&gt;(options)</code> 调用；未列出的能力不受支持
+                  </td>
+                </tr>
+                <tr>
+                  <td>Promise / 回调</td>
+                  <td>
+                    传入 <code>success</code> / <code>fail</code> /
+                    <code>complete</code> 任一回调时返回 <code>undefined</code>；都不传则返回
+                    <code>Promise</code>
+                  </td>
+                </tr>
+                <tr>
+                  <td>成功</td>
+                  <td>
+                    resolve / <code>success</code> 收到结果对象，含
+                    <code>errMsg: "&lt;api&gt;:ok"</code> 及该 API 的业务字段
+                  </td>
+                </tr>
+                <tr>
+                  <td>失败</td>
+                  <td>
+                    reject / <code>fail</code> 收到
+                    <code>{ errMsg: "&lt;api&gt;:fail ...", errCode? }</code>；参数不合法时会在本地直接失败，不上行
+                  </td>
+                </tr>
+                <tr>
+                  <td>参数校验</td>
+                  <td>
+                    SDK 上行前按 JSON Schema 校验，Native 侧用同一份 Schema 再校验一次：<b>表中未声明的字段不要传</b>
+                  </td>
+                </tr>
+                <tr>
+                  <td>可用性判断</td>
+                  <td>
+                    调用前用 <code>window.xhs &amp;&amp; window.xhs.miniTool</code> 判空，并为未注入的环境准备降级路径
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pre class="code"><code>const miniTool = window.xhs &amp;&amp; window.xhs.miniTool;
+if (!miniTool) return; // 当前环境未注入端能力
+
+// Promise 形态
+try {
+  await miniTool.saveImageToPhotosAlbum({ filePath });
+} catch (err) {
+  console.log(err.errMsg); // "saveImageToPhotosAlbum:fail ..."
+}
+
+// 回调形态（返回 undefined）
+miniTool.saveImageToPhotosAlbum({
+  filePath,
+  success: (res) => console.log(res.errMsg),
+  fail: (err) => console.log(err.errMsg),
+  complete: () => {},
+});</code></pre>
+
+          <!-- 3.2 API 一览 -->
+          <h3 id="s3-2">3.2 API 一览</h3>
+          <div class="tbl-wrap">
+            <table class="tbl wide">
+              <thead>
+                <tr>
+                  <th style="width: 26%">API</th>
+                  <th>能力</th>
+                  <th>可替代 / 适用场景</th>
+                  <th style="width: 14%">形态</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><a href="#s3-3"><code>postNote</code></a></td>
+                  <td>唤起笔记发布页，带入标题 / 正文 / 图片 / 视频</td>
+                  <td>网页无法直接发布笔记时使用</td>
+                  <td>异步</td>
+                </tr>
+                <tr>
+                  <td><a href="#s3-4"><code>saveImageToPhotosAlbum</code></a></td>
+                  <td>保存图片到系统相册</td>
+                  <td>替代 <code>&lt;a download&gt;</code> / Blob 下载保存图片</td>
+                  <td>异步</td>
+                </tr>
+                <tr>
+                  <td><a href="#s3-5"><code>writeTempFile</code></a></td>
+                  <td>把 base64 数据写成容器内临时文件，换取 <code>filePath</code></td>
+                  <td>需要向其他端 API 传本地路径时使用</td>
+                  <td>异步</td>
+                </tr>
+                <tr>
+                  <td><a href="#s3-6"><code>getLaunchOptions</code></a></td>
+                  <td>异步获取客户端启动参数</td>
+                  <td>读取 <code>miniToolEnv.buildVersion</code> 做客户端版本判断</td>
+                  <td>异步</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="#s3-7"><code>setStorage</code> / <code>getStorage</code> /<br />
+                    <code>getStorageInfo</code> / <code>removeStorage</code> / <code>clearStorage</code></a>
+                  </td>
+                  <td>小工具本地缓存（版本要求见 <a href="#s3-6">§3.6</a>）</td>
+                  <td>替代 <code>localStorage</code> / <code>IndexedDB</code> / Cookie / Cache API</td>
+                  <td>异步</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="#s3-8"><code>saveFile</code> / <code>writeFile</code> /<br />
+                    <code>appendFile</code> / <code>readFile</code> / <code>readDir</code> /<br />
+                    <code>statFile</code> / <code>unlink</code> / <code>mkdir</code> /<br />
+                    <code>getFileStorageInfo</code></a>
+                  </td>
+                  <td>小工具本地文件的保存、读写、查询与管理</td>
+                  <td>持久文件、二进制数据和大文件分片读写（客户端 9.49+）</td>
+                  <td>异步</td>
+                </tr>
+                <tr>
+                  <td><a href="#s3-9"><code>interactionOpenApi</code></a></td>
+                  <td>携带评论草稿打开评论编辑器</td>
+                  <td>分享小工具生成的文本或图片（客户端 9.49+）</td>
+                  <td>异步</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="callout info">
+            <div class="ic">💡</div>
+            <div class="txt">
+              媒体类字段（图片 / 视频 / 封面）只接受 <code>data:</code> base64
+              或本地文件路径（容器不联网，<b>网络地址不可用</b>）。体积较大的 base64
+              建议先用 <code>writeTempFile</code> 换成 <code>filePath</code> 再传。
+            </div>
+          </div>
+
+          <!-- 3.3 postNote -->
+          <h3 id="s3-3">3.3 postNote — 发布笔记</h3>
+          <p>唤起 App 笔记发布页，并带入小工具产出的内容与媒体。用户在发布页可继续编辑或取消。</p>
+          <div class="tbl-wrap">
+            <table class="tbl wide">
+              <thead>
+                <tr>
+                  <th style="width: 24%">字段</th>
+                  <th style="width: 14%">类型</th>
+                  <th style="width: 10%">必填</th>
+                  <th>说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>title</code></td>
+                  <td>string</td>
+                  <td>否</td>
+                  <td>标题，最长 20 字</td>
+                </tr>
+                <tr>
+                  <td><code>content</code></td>
+                  <td>string</td>
+                  <td>否</td>
+                  <td>正文，最长 1000 字</td>
+                </tr>
+                <tr>
+                  <td><code>pageType</code></td>
+                  <td>string</td>
+                  <td>否</td>
+                  <td>
+                    页面类型：<code>video_publish</code> / <code>photo_publish</code> /
+                    <code>slides_edit</code>（客户端 9.43+）
+                  </td>
+                </tr>
+                <tr>
+                  <td><code>mediaInfo</code></td>
+                  <td>object</td>
+                  <td><b>是</b></td>
+                  <td>媒体信息，下列三种资源<b>至少传一种，可同时传</b></td>
+                </tr>
+                <tr>
+                  <td><code>mediaInfo.image_resources</code></td>
+                  <td><code>{ url }[]</code></td>
+                  <td>否</td>
+                  <td>图片，1–18 张；<code>url</code> 为 base64 或本地路径</td>
+                </tr>
+                <tr>
+                  <td><code>mediaInfo.video_resources</code></td>
+                  <td><code>{ video_url, cover_url? }</code></td>
+                  <td>否</td>
+                  <td>单个视频，<code>cover_url</code> 为可选封面</td>
+                </tr>
+                <tr>
+                  <td><code>mediaInfo.live_photo_sources</code></td>
+                  <td><code>{ url, video_url }[]</code></td>
+                  <td>否</td>
+                  <td>
+                    实况照片，1–18 组；<code>url</code> 为封面，<code>video_url</code>
+                    为视频（客户端 9.43+）
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pre class="code"><code>// 图文笔记
+await window.xhs.miniTool.postNote({
+  title: "我的作品",
+  content: "用小工具生成的",
+  pageType: "photo_publish",
+  mediaInfo: {
+    image_resources: [{ url: "data:image/png;base64,iVBORw0KGgo..." }],
+  },
+});
+
+// 视频笔记
+await window.xhs.miniTool.postNote({
+  pageType: "video_publish",
+  mediaInfo: {
+    video_resources: { video_url: videoPath, cover_url: coverPath },
+  },
+});
+
+// 实况笔记（客户端 9.43+）
+await window.xhs.miniTool.postNote({
+  pageType: "slides_edit",
+  mediaInfo: {
+    live_photo_sources: [{ url: coverPath, video_url: videoPath }],
+  },
+});</code></pre>
+          <div class="callout">
+            <div class="ic">⚠️</div>
+            <div class="txt">
+              成功回调只代表<b>发布页已被唤起并由用户点击发布</b>，不代表笔记最终审核通过。请勿依赖它做强一致的业务状态。
+            </div>
+          </div>
+
+          <!-- 3.4 saveImageToPhotosAlbum -->
+          <h3 id="s3-4">3.4 saveImageToPhotosAlbum — 保存图片到相册</h3>
+          <div class="tbl-wrap">
+            <table class="tbl wide">
+              <thead>
+                <tr>
+                  <th style="width: 24%">字段</th>
+                  <th style="width: 14%">类型</th>
+                  <th style="width: 10%">必填</th>
+                  <th>说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>filePath</code></td>
+                  <td>string</td>
+                  <td><b>是</b></td>
+                  <td>
+                    本地图片：<code>data:</code> base64 或
+                    <code>writeTempFile</code> 返回的路径；<b>不支持</b>
+                    <code>http(s)://</code> 网络地址
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pre class="code"><code>// Canvas 导出直接保存
+const dataUrl = canvas.toDataURL("image/png");
+await window.xhs.miniTool.saveImageToPhotosAlbum({ filePath: dataUrl });</code></pre>
+          <ul class="list">
+            <li>需由用户主动操作（点击等）触发，首次调用可能弹出系统相册权限弹窗；用户拒绝授权会走失败回调。</li>
+            <li>大图建议先 <code>writeTempFile</code> 落成文件再保存，避免超长 base64 上行。</li>
+          </ul>
+
+          <!-- 3.5 writeTempFile -->
+          <h3 id="s3-5">3.5 writeTempFile — base64 转临时文件</h3>
+          <p>
+            把内存里的 base64（Canvas 导出、选图预览结果等）写成容器内的临时文件，换取可传给其他 JS API 的
+            <code>filePath</code>。
+          </p>
+          <div class="tbl-wrap">
+            <table class="tbl wide">
+              <thead>
+                <tr>
+                  <th style="width: 24%">字段</th>
+                  <th style="width: 14%">类型</th>
+                  <th style="width: 10%">必填</th>
+                  <th>说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>data</code></td>
+                  <td>string</td>
+                  <td><b>是</b></td>
+                  <td>base64 数据（支持带 <code>data:</code> 前缀的 data URI）</td>
+                </tr>
+                <tr>
+                  <td><code>filePath</code>（返回）</td>
+                  <td>string</td>
+                  <td>—</td>
+                  <td>写入后的临时文件路径</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pre class="code"><code>const { filePath } = await window.xhs.miniTool.writeTempFile({
+  data: canvas.toDataURL("image/png"),
+});
+
+await window.xhs.miniTool.saveImageToPhotosAlbum({ filePath });
+// 或带入发布页
+await window.xhs.miniTool.postNote({
+  mediaInfo: { image_resources: [{ url: filePath }] },
+});</code></pre>
+          <ul class="list">
+            <li>返回的是<b>临时文件</b>，不保证长期有效，请即用即弃，不要持久化保存该路径。</li>
+            <li>仅支持常见图片 / 视频类型（png、jpeg、webp、gif、mp4），其他类型会失败。</li>
+          </ul>
+
+          <!-- 3.6 Client version -->
+          <h3 id="s3-6">3.6 客户端版本判断</h3>
+          <div class="callout info">
+            <div class="ic">💡</div>
+            <div class="txt">
+              <code>buildVersion</code> 的末 3 位是编译 / 打包序号，判断客户端版本时必须忽略。
+              例如 <code>9462004</code> 表示客户端 <code>9.46.2</code>、编译序号 <code>004</code>。
+            </div>
+          </div>
+          <p>
+            <code>window.xhs</code>、<code>launchOptions</code>、<code>miniToolEnv</code> 和
+            <code>buildVersion</code> 都可能缺失，同步读取时必须逐级判空。同步值不存在时，
+            在确认 <code>window.xhs.miniTool.getLaunchOptions</code> 是函数后，再异步获取客户端值。
+            两种方式都无法取到版本号时，按不支持 Storage JS API 处理。
+          </p>
+          <pre class="code"><code>function readBuildVersion(launchOptions) {
+  const miniToolEnv = launchOptions &amp;&amp; launchOptions.miniToolEnv;
+  return Number(miniToolEnv &amp;&amp; miniToolEnv.buildVersion) || 0;
+}
+
+async function getBuildVersion() {
+  const xhs = window.xhs;
+  const syncBuildVersion = readBuildVersion(xhs &amp;&amp; xhs.launchOptions);
+  if (syncBuildVersion) return syncBuildVersion;
+
+  const miniTool = xhs &amp;&amp; xhs.miniTool;
+  if (!miniTool || typeof miniTool.getLaunchOptions !== "function") return 0;
+
+  try {
+    const launchOptions = await miniTool.getLaunchOptions();
+    return readBuildVersion(launchOptions);
+  } catch (error) {
+    return 0;
+  }
+}
+
+function getClientVersion(buildVersion) {
+  // 例如 9462004 / 1000 取整后为 9462，即客户端 9.46.2
+  return Math.floor(buildVersion / 1000);
+}
+
+function isClientVersionAtLeast(buildVersion, minimumClientVersion) {
+  return getClientVersion(buildVersion) &gt;= minimumClientVersion;
+}</code></pre>
+          <!-- 3.7 Storage -->
+          <h3 id="s3-7">3.7 Storage — 小工具本地缓存</h3>
+          <div class="callout info">
+            <div class="ic">💡</div>
+            <div class="txt">
+              客户端满足 <a href="#s3-6">§3.6</a> 的版本条件时，使用 Storage JS API 持久化业务数据。
+              未满足版本条件时可按需降级到浏览器存储，但必须容忍写入失败或数据丢失。
+            </div>
+          </div>
+          <pre class="code"><code>const STORAGE_MIN_CLIENT_VERSION = 9460; // 客户端 9.46.0
+
+async function setLocalData(key, data) {
+  let serializedData;
+  try {
+    serializedData = JSON.stringify(data);
+  } catch (error) {
+    return false;
+  }
+  if (typeof serializedData !== "string") return false;
+
+  const buildVersion = await getBuildVersion();
+  const miniTool = window.xhs &amp;&amp; window.xhs.miniTool;
+
+  if (
+    isClientVersionAtLeast(buildVersion, STORAGE_MIN_CLIENT_VERSION) &amp;&amp;
+    miniTool &amp;&amp;
+    typeof miniTool.setStorage === "function"
+  ) {
+    try {
+      await miniTool.setStorage({ key, data: serializedData });
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  // 仅用于兼容低版本客户端；容器不保证其可用性或持久性
+  try {
+    localStorage.setItem(key, serializedData);
+    return true;
+  } catch (error) {
+    return false;
+  }
+}</code></pre>
+          <p>
+            调用方必须处理 <code>setLocalData</code> 返回 <code>false</code> 的情况，
+            不能假设数据已成功持久化。
+          </p>
+          <div class="tbl-wrap">
+            <table class="tbl wide">
+              <thead>
+                <tr>
+                  <th style="width: 22%">API</th>
+                  <th style="width: 32%">参数</th>
+                  <th>结果 / 说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>setStorage</code></td>
+                  <td><code>key: string</code>、<code>data: string</code>、<code>encrypt?: boolean</code></td>
+                  <td>写入或覆盖缓存；<code>data</code> 必须是 JSON 字符串</td>
+                </tr>
+                <tr>
+                  <td><code>getStorage</code></td>
+                  <td><code>key: string</code>、<code>encrypt?: boolean</code></td>
+                  <td>返回 <code>{ data }</code>；<code>data</code> 为 JSON 字符串，<code>encrypt</code> 须与写入时一致</td>
+                </tr>
+                <tr>
+                  <td><code>getStorageInfo</code></td>
+                  <td>无业务参数</td>
+                  <td>返回 <code>{ keys, currentSize, limitSize }</code>，容量单位为 KB</td>
+                </tr>
+                <tr>
+                  <td><code>removeStorage</code></td>
+                  <td><code>key: string</code></td>
+                  <td>删除指定缓存</td>
+                </tr>
+                <tr>
+                  <td><code>clearStorage</code></td>
+                  <td>无业务参数</td>
+                  <td>清空当前小工具的全部缓存</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <ul class="list">
+            <li>单个 key 最大 1 MB，当前小工具全部缓存最大 10 MB。</li>
+            <li><code>data</code> 只支持 JSON 字符串。对象、数组等数据必须先用 <code>JSON.stringify</code> 序列化；读取后再用 <code>JSON.parse</code> 解析。</li>
+            <li><code>encrypt</code> 默认为 <code>false</code>；读取时必须与写入时保持一致。</li>
+            <li>这些 API 同时支持 Promise 与 <code>success</code> / <code>fail</code> / <code>complete</code> 回调。</li>
+          </ul>
+          <pre class="code"><code>await window.xhs.miniTool.setStorage({
+  key: "profile",
+  data: JSON.stringify({ nickname: "小红薯" }),
+});
+
+const { data } = await window.xhs.miniTool.getStorage({ key: "profile" });
+const profile = data === null ? null : JSON.parse(data);
+const { keys, currentSize, limitSize } = await window.xhs.miniTool.getStorageInfo();
+
+await window.xhs.miniTool.removeStorage({ key: "profile" });
+await window.xhs.miniTool.clearStorage();</code></pre>
+
+          <!-- 3.8 File system -->
+          <h3 id="s3-8">3.8 文件系统</h3>
+          <div class="callout info">
+            <div class="ic">💡</div>
+            <div class="txt">
+              文件系统 API 需要客户端 <b>9.49+</b>。可复用 <a href="#s3-6">§3.6</a> 的
+              <code>getBuildVersion</code> 与 <code>isClientVersionAtLeast</code>，以
+              <code>9490</code> 作为最低客户端版本判断。
+            </div>
+          </div>
+          <p>
+            文件和二进制数据使用文件系统保存。持久目录根路径由
+            <code>launchOptions.miniToolEnv.userDataPath</code> 提供；请只在该路径后拼接相对路径，
+            不要硬编码、解析或改写端上返回的文件句柄。
+          </p>
+          <div class="tbl-wrap">
+            <table class="tbl wide">
+              <thead>
+                <tr>
+                  <th style="width: 24%">API</th>
+                  <th style="width: 31%">参数</th>
+                  <th>结果 / 说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>saveFile</code></td>
+                  <td><code>tempFilePath: string</code>、<code>filePath?: string | null</code></td>
+                  <td>将临时文件移动到持久目录，返回 <code>{ savedFilePath }</code></td>
+                </tr>
+                <tr>
+                  <td><code>writeFile</code></td>
+                  <td><code>filePath: string</code>、<code>data: string</code>、<code>encoding: "utf8" | "base64"</code></td>
+                  <td>覆盖写入，返回 <code>{ writtenBytes }</code></td>
+                </tr>
+                <tr>
+                  <td><code>appendFile</code></td>
+                  <td><code>filePath: string</code>、<code>data: string</code>、<code>encoding: "utf8" | "base64"</code></td>
+                  <td>向文件末尾追加，返回 <code>{ writtenBytes }</code></td>
+                </tr>
+                <tr>
+                  <td><code>readFile</code></td>
+                  <td><code>filePath: string</code>、<code>encoding: "utf8" | "base64"</code>、<code>position?: number</code>、<code>length?: number</code></td>
+                  <td>读取一个文件分片，返回 <code>{ data, bytesRead, eof }</code></td>
+                </tr>
+                <tr>
+                  <td><code>readDir</code></td>
+                  <td><code>dirPath: string</code></td>
+                  <td>读取目录直接子项，返回 <code>{ files, truncated }</code></td>
+                </tr>
+                <tr>
+                  <td><code>statFile</code></td>
+                  <td><code>filePath: string</code></td>
+                  <td>读取文件或目录信息，返回 <code>{ size, lastModified, isDir }</code></td>
+                </tr>
+                <tr>
+                  <td><code>unlink</code></td>
+                  <td><code>filePath: string</code></td>
+                  <td>删除持久目录中的文件</td>
+                </tr>
+                <tr>
+                  <td><code>mkdir</code></td>
+                  <td><code>dirPath: string</code>、<code>recursive?: boolean</code></td>
+                  <td>创建持久文件目录</td>
+                </tr>
+                <tr>
+                  <td><code>getFileStorageInfo</code></td>
+                  <td>无业务参数</td>
+                  <td>返回 <code>{ usedBytes, limitBytes, fileCount, tmpUsedBytes, writeChunkMaxBytes, readChunkMaxBytes }</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pre class="code"><code>const miniTool = window.xhs &amp;&amp; window.xhs.miniTool;
+const launchOptions = await miniTool.getLaunchOptions();
+const userDataPath = launchOptions.miniToolEnv.userDataPath;
+const filePath = userDataPath + "/drafts/note.json";
+
+await miniTool.writeFile({
+  filePath,
+  data: JSON.stringify({ title: "草稿" }),
+  encoding: "utf8",
+});
+
+const { data } = await miniTool.readFile({
+  filePath,
+  encoding: "utf8",
+});</code></pre>
+          <ul class="list">
+            <li><code>writeFile</code> 覆盖写入，<code>appendFile</code> 追加写入。大文件由业务自行分片：第一片用 <code>writeFile</code>，后续片串行调用 <code>appendFile</code>。</li>
+            <li>分片大小以 <code>getFileStorageInfo</code> 返回的 <code>writeChunkMaxBytes</code> 和 <code>readChunkMaxBytes</code> 为准，不要硬编码。</li>
+            <li>图片和视频渲染时直接使用文件句柄作为 <code>img.src</code>、<code>video.src</code> 或 CSS 资源；需要文件字节时才使用 <code>readFile</code>。</li>
+            <li><code>usr</code> 是本地工作区而非备份空间。它不随容器关闭清空，但卸载、清数据或包清理后仍可能丢失，重要数据应可重建或引导用户导出。</li>
+          </ul>
+
+          <!-- 3.9 interactionOpenApi -->
+          <h3 id="s3-9">3.9 interactionOpenApi — 发布评论</h3>
+          <div class="callout info">
+            <div class="ic">💡</div>
+            <div class="txt">
+              评论区能力需要客户端 <b>9.49+</b>，并应由用户点击等主动操作触发。
+            </div>
+          </div>
+          <p>
+            用于唤起评论区并携带评论草稿；草稿字段遵循评论侧契约。容器会统一关闭小工具后再拉起评论区。
+          </p>
+          <div class="tbl-wrap">
+            <table class="tbl wide">
+              <thead>
+                <tr>
+                  <th style="width: 28%">字段</th>
+                  <th style="width: 16%">类型</th>
+                  <th style="width: 10%">必填</th>
+                  <th>说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td><code>payload</code></td><td>object</td><td><b>是</b></td><td>评论草稿；由评论侧定义字段</td></tr>
+                <tr><td><code>payload.action</code></td><td>string</td><td>按评论侧契约</td><td>发布评论时使用 <code>post_comment</code></td></tr>
+                <tr><td><code>payload.content</code></td><td>string</td><td>否</td><td>评论文本</td></tr>
+                <tr><td><code>payload.media_bean</code></td><td>array</td><td>否</td><td>有序图片列表；媒体路径使用本地文件句柄</td></tr>
+                <tr><td><code>payload.miniToolSnapshotInfo</code></td><td>string</td><td>否</td><td>小工具附加状态的 JSON 字符串，最大 2KB；超限时该字段无效</td></tr>
+                <tr><td><code>saveToAlbum</code></td><td>boolean</td><td>否</td><td>是否将 payload 中的图片同步保存到相册，默认 <code>true</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <pre class="code"><code>const result = await window.xhs.miniTool.interactionOpenApi({
+  payload: {
+    action: "post_comment",
+    content: "快来和我 PK！",
+    media_bean: [{
+      media_type: "image",
+      cover_image_url: imageFilePath,
+    }],
+    miniToolSnapshotInfo: JSON.stringify({ page: "result" }),
+  },
+  saveToAlbum: true,
+});
+
+// { routed, savedToAlbum, albumFailReason? }</code></pre>
+          <ul class="list">
+            <li>目前仅支持图片，使用 <code>{ media_type: "image", cover_image_url }</code>；视频和实况图不支持。</li>
+            <li>媒体路径必须是容器可访问的本地文件句柄；网络 URL、<code>data:</code> URI 和绝对路径不可用。</li>
+            <li><code>miniToolSnapshotInfo</code> 有效时，用户从评论区重新打开小工具可读取该数据，用于恢复对应业务状态；恢复逻辑由开发者自行实现。</li>
+            <li><code>routed</code> 表示评论侧路由是否成功。请求保存相册但失败时，失败原因会通过可选字段 <code>albumFailReason</code> 返回。</li>
+          </ul>
+        </section>
+
+        <!-- ============ 4. 不可用能力 ============ -->
+        <section class="block" id="s4">
+          <h2><span class="no">04</span>不可用能力</h2>
+          <p class="desc">
+            以下能力在容器内<b>已被禁用</b>，调用会失败（抛出异常、返回空值或被拦截），请勿使用。
+          </p>
+
+          <!-- 4.1 -->
+          <h3 id="s4-1">4.1 已禁用的 Web API</h3>
+          <div class="tbl-wrap">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th style="width: 20%">分类</th>
+                  <th>能力</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>定位</td>
+                  <td>地理定位 <code>navigator.geolocation</code></td>
+                </tr>
+                <tr>
+                  <td>剪贴板</td>
+                  <td>
+                    <code>navigator.clipboard</code>、<code>execCommand('copy'/'cut'/'paste')</code>
+                  </td>
+                </tr>
+                <tr>
+                  <td>硬件连接</td>
+                  <td>蓝牙、USB、HID、串口</td>
+                </tr>
+                <tr>
+                  <td>传感器</td>
+                  <td>加速度计、陀螺仪、磁力计、环境光、设备运动 / 朝向</td>
+                </tr>
+                <tr>
+                  <td>实时通信</td>
+                  <td>WebRTC、WebSocket、EventSource（SSE）</td>
+                </tr>
+                <tr>
+                  <td>后台运行</td>
+                  <td>Web Worker、SharedWorker、Service Worker</td>
+                </tr>
+                <tr>
+                  <td>屏幕</td>
+                  <td>屏幕共享、全屏 <code>requestFullscreen</code>（全屏由容器统一管理）</td>
+                </tr>
+                <tr>
+                  <td>设备信息</td>
+                  <td>电池状态、网络信息、媒体设备枚举</td>
+                </tr>
+                <tr>
+                  <td>存储进阶</td>
+                  <td>持久化存储、跨域存储访问</td>
+                </tr>
+                <tr>
+                  <td>凭据</td>
+                  <td>WebAuthn / <code>navigator.credentials</code>、Web Locks</td>
+                </tr>
+                <tr>
+                  <td>窗口</td>
+                  <td>
+                    <code>window.open</code>（弹新窗口）、<code>window.prompt</code>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 4.2 -->
+          <h3 id="s4-2">4.2 已禁用的行为</h3>
+          <div class="tbl-wrap">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th style="width: 22%">行为</th>
+                  <th>说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>网络请求</b></td>
+                  <td>
+                    <code>fetch</code> / <code>XMLHttpRequest</code>、加载外部图片 /
+                    字体 / 媒体等一切联网请求。小工具纯本地运行，所有资源须打包在内
+                  </td>
+                </tr>
+                <tr>
+                  <td>动态执行代码</td>
+                  <td><code>eval()</code>、<code>new Function()</code></td>
+                </tr>
+                <tr>
+                  <td>WebAssembly</td>
+                  <td>WASM 编译执行（依赖 WASM 的库无法运行，见 §5）</td>
+                </tr>
+                <tr>
+                  <td>iframe</td>
+                  <td>页面内嵌 iframe / 被外部页面嵌入</td>
+                </tr>
+                <tr>
+                  <td>表单跳转提交</td>
+                  <td><code>&lt;form&gt;</code> 提交跳转</td>
+                </tr>
+                <tr>
+                  <td>插件</td>
+                  <td>Flash 等浏览器插件</td>
+                </tr>
+                <tr>
+                  <td>文件下载</td>
+                  <td>
+                    <code>a[download]</code>、blob 下载等；保存图片请用
+                    <code>saveImageToPhotosAlbum</code>（见 §3.4）
+                  </td>
+                </tr>
+                <tr>
+                  <td>打开外链 / 新窗口</td>
+                  <td><code>target="_blank"</code>、跳转站外</td>
+                </tr>
+                <tr>
+                  <td>跳转其他小工具</td>
+                  <td>小工具间互相跳转</td>
+                </tr>
+                <tr>
+                  <td>长按菜单</td>
+                  <td>已禁用</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 4.3 -->
+          <h3 id="s4-3">4.3 移动端不支持</h3>
+          <p>
+            以下能力移动端 WebView 本身不支持，无法使用：支付
+            <code>PaymentRequest</code>、系统通知 / 推送、NFC、MIDI、XR / AR /
+            VR、后台同步 / 下载、PWA 安装、窗口管理、指针 / 键盘锁定等。
+          </p>
+        </section>
+
+        <!-- ============ 5. WebGL ============ -->
+        <section class="block" id="s5">
+          <h2><span class="no">05</span>WebGL / 图形计算边界</h2>
+          <p class="desc">纯 WebGL 渲染可用，但组合能力受限：</p>
+          <div class="tbl-wrap">
+            <table class="tbl wide">
+              <thead>
+                <tr>
+                  <th>场景</th>
+                  <th style="width: 22%">是否可用</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>本地资源 / Canvas / 内存对象作为纹理</td>
+                  <td><span class="yes">✅</span> 可用</td>
+                </tr>
+                <tr>
+                  <td>外部域名图片作为纹理</td>
+                  <td>
+                    <span class="no">🔴</span> 不可用（不支持网络请求，纹理须打包在内）
+                  </td>
+                </tr>
+                <tr>
+                  <td>依赖 WASM 的加速库（如 Draco / Basis / ONNX / 抠图算法库）</td>
+                  <td><span class="no">🔴</span> 不可用</td>
+                </tr>
+                <tr>
+                  <td>依赖 Worker 的离屏渲染（OffscreenCanvas + Worker）</td>
+                  <td><span class="no">🔴</span> 不可用</td>
+                </tr>
+                <tr>
+                  <td>SharedArrayBuffer 多线程</td>
+                  <td><span class="no">🔴</span> 不可用</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            WebGL 适合用打包在小工具内的资源做本地渲染；需要 AI
+            图像处理等重计算的场景无法支持（既不能联网也不能跑 WASM 模型）。
+          </p>
+        </section>
+
+        <!-- ============ 6. FAQ ============ -->
+        <section class="block faq" id="s6">
+          <h2><span class="no">06</span>常见问题 FAQ</h2>
+
+          <details open>
+            <summary>创作或改写小工具应该从哪里开始？</summary>
+            <div class="answer">
+              从小工具上传页开始。在“第一步：调整为符合小红书规范的代码格式”中完整复制改写口令，
+              发送给工作区内的 AI 助手执行。口令会指导 AI 下载当前版本 Skill、读取
+              <code>SKILL.md</code>、校验和修复代码并打包；不要只把本页能力清单当作改写提示词。
+            </div>
+          </details>
+
+          <details open>
+            <summary>
+              <code>&lt;input type="file" accept="video/*"&gt;</code> 为什么只能选图片？
+            </summary>
+            <div class="answer">
+              出于安全考虑，文件选择仅支持图片和视频，无论 accept 如何设置，此限制不可更改。
+            </div>
+          </details>
+
+          <details open>
+            <summary>页面里的 <code>&lt;script&gt;</code> 不执行 / 报 CSP 错误？</summary>
+            <div class="answer">
+              容器禁止内联脚本与行内事件处理器（<code>onclick="..."</code>）。请把 JS
+              放进包内 <code>.js</code> 文件用
+              <code>&lt;script src="./app.js"&gt;</code> 引入，事件用
+              <code>addEventListener</code> 绑定。详见 §2.6。
+            </div>
+          </details>
+
+          <details open>
+            <summary>能不能请求我自己的服务端接口 / 加载线上图片？</summary>
+            <div class="answer">
+              不支持任何网络请求。所有页面、脚本、图片、字体、数据都必须打包在小工具内，按完全离线自包含来设计。
+            </div>
+          </details>
+
+          <details open>
+            <summary>需要服务端实时推送怎么办？</summary>
+            <div class="answer">
+              不支持网络请求（含 WebSocket / SSE / WebRTC 与轮询），无法与服务端通信。
+            </div>
+          </details>
+
+          <details open>
+            <summary>第三方库报安全错误 / 无法运行？</summary>
+            <div class="answer">
+              多半命中了 §4。请排查是否用到了 <code>eval</code>、WebAssembly、Worker，或发起了网络请求，改用容器允许的等价方案。
+            </div>
+          </details>
+
+          <details open>
+            <summary>怎么把小工具生成的图片保存到相册 / 发成笔记？</summary>
+            <div class="answer">
+              用容器注入的 JS API：<code>writeTempFile</code> 把 base64 换成
+              <code>filePath</code>，再传给 <code>saveImageToPhotosAlbum</code> 或
+              <code>postNote</code>。详见 §3。
+            </div>
+          </details>
+
+          <details open>
+            <summary><code>window.xhs</code> 是 <code>undefined</code>？</summary>
+            <div class="answer">
+              说明当前环境未注入端能力（如在普通浏览器中预览）。请用
+              <code>window.xhs &amp;&amp; window.xhs.miniTool</code> 判空并提供降级路径，不要在无 SDK 时直接调用。
+            </div>
+          </details>
+
+          <details open>
+            <summary>JS API 传网络图片地址为什么失败？</summary>
+            <div class="answer">
+              容器不联网，媒体字段只接受 <code>data:</code> base64 或
+              <code>writeTempFile</code> 返回的本地路径。
+            </div>
+          </details>
+
+          <details open>
+            <summary>能不能调用文档里没列出的其他原生能力？</summary>
+            <div class="answer">
+              不能。§3.2 列出的即为全部可用 JS API，未列出的能力不受支持。
+            </div>
+          </details>
+        </section>
+      </main>
+    </div>
+
+    <footer>© 小红书 · 小工具容器 · 能力清单</footer>
+  </body>
+</html>
+

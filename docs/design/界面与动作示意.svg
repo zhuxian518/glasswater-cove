@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="860" viewBox="0 0 1200 860">
+<defs>
+ <linearGradient id="sea" x2="0" y2="1"><stop stop-color="#83d9ce"/><stop offset="1" stop-color="#246c78"/></linearGradient>
+ <g id="fish"><path d="M-23 0 Q-10-15 11-8 L24-17 21 0 24 17 11 8 Q-10 15-23 0Z"/><circle cx="-13" cy="-2" r="2.5" fill="#183e47"/></g>
+ <pattern id="mesh" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M0 0L12 12M12 0L0 12" stroke="#fff3d9" stroke-opacity=".7" stroke-width="1"/></pattern>
+ <style>text{font-family:'Microsoft YaHei','PingFang SC',sans-serif;fill:#183e47}.title{font-size:28px;font-weight:700}.h{font-size:22px;font-weight:700}.p{font-size:17px}.small{font-size:14px}.white{fill:#fff9ed}.box{fill:#fff9ed;stroke:#d9e4db;stroke-width:1.5}</style>
+</defs>
+<rect width="1200" height="860" fill="#f5f4ec"/>
+<text x="38" y="43" class="title">撒网打鱼 · 界面与动作示意</text>
+<text x="38" y="70" class="small">布局说明稿｜非最终美术｜分数、鱼群和收获均为演示</text>
+<rect x="38" y="95" width="366" height="680" rx="26" fill="#fff9ed" stroke="#c7d9d0" stroke-width="2"/>
+<text x="57" y="126" class="p" font-weight="700">鱼获 320</text><text x="191" y="126" class="p">还剩 48 秒</text><text x="335" y="126" class="small">暂停</text>
+<rect x="52" y="144" width="338" height="485" rx="12" fill="url(#sea)"/>
+<path d="M52 156Q112 134 180 150T390 154L390 205L52 205Z" fill="#fff3d9"/>
+<circle cx="342" cy="174" r="18" fill="#f3c653"/>
+<path d="M52 205Q76 198 100 205T148 205T196 205T244 205T292 205T340 205T390 205" fill="none" stroke="#fff9ed" stroke-width="3"/>
+<path d="M170 193L256 193 244 210 185 210Z" fill="#a86a42" stroke="#183e47" stroke-width="2"/>
+<rect x="196" y="174" width="30" height="19" rx="3" fill="#fff3d9" stroke="#183e47"/><path d="M220 174V161" stroke="#183e47" stroke-width="2"/>
+<path d="M220 207Q270 240 258 399" fill="none" stroke="#e8cfa2" stroke-width="2"/>
+<g stroke="#183e47" stroke-width="1.6">
+<use href="#fish" transform="translate(115 272) scale(.72)" fill="#dcebe7"/>
+<use href="#fish" transform="translate(151 285) scale(.72)" fill="#dcebe7"/>
+<use href="#fish" transform="translate(181 265) scale(.72)" fill="#dcebe7"/>
+<use href="#fish" transform="translate(100 366) scale(.85)" fill="#e97155"/>
+<use href="#fish" transform="translate(157 384) scale(.85)" fill="#e97155"/>
+<use href="#fish" transform="translate(242 418) scale(.72)" fill="#dcebe7"/>
+<use href="#fish" transform="translate(275 403) scale(.72)" fill="#dcebe7"/>
+<use href="#fish" transform="translate(272 439) scale(.72)" fill="#dcebe7"/>
+<use href="#fish" transform="translate(325 527) scale(.9)" fill="#f3c653"/>
+</g>
+<circle cx="258" cy="422" r="48" fill="url(#mesh)" stroke="#fff3d9" stroke-width="3"/>
+<text x="216" y="491" class="small white">已入网 3 条</text>
+<path d="M77 623Q63 587 80 571M77 609Q97 589 92 565M356 623Q377 585 363 567" fill="none" stroke="#3e927c" stroke-width="9" stroke-linecap="round"/>
+<text x="65" y="652" class="small">网位</text><circle cx="122" cy="647" r="8" fill="#e97155"/><circle cx="149" cy="647" r="8" fill="#b4c5bd"/><circle cx="176" cy="647" r="8" fill="#b4c5bd"/><text x="204" y="652" class="small">小目标：一网三条 ✓</text>
+<rect x="53" y="676" width="80" height="66" rx="19" fill="#e2eee5"/><rect x="143" y="669" width="155" height="80" rx="24" fill="#e97155"/><rect x="308" y="676" width="81" height="66" rx="19" fill="#e2eee5"/>
+<text x="80" y="717" class="h">‹</text><text x="194" y="718" class="h white">撒网</text><text x="337" y="717" class="h">›</text>
+<text x="58" y="802" class="small">固定侧面剖面 · 等比适配 · 操作区独立于水体</text>
+<text x="447" y="122" class="h">一张网的过程</text>
+<g transform="translate(447 142)">
+ <rect width="711" height="172" rx="18" class="box"/>
+ <text x="20" y="34" class="p" font-weight="700">1 按下 → 2 按住沉网 → 3 松手张网 → 4 收拢 → 5 回船</text>
+ <path d="M25 75Q57 45 89 75M25 75H89" fill="none" stroke="#a86a42" stroke-width="3"/>
+ <path d="M168 63L152 104H192Z" fill="url(#mesh)" stroke="#a86a42" stroke-width="2"/>
+ <circle cx="321" cy="88" r="34" fill="url(#mesh)" stroke="#a86a42" stroke-width="2"/>
+ <use href="#fish" transform="translate(319 89) scale(.65)" fill="#e97155"/>
+ <path d="M459 54Q429 100 459 119Q489 100 459 54Z" fill="url(#mesh)" stroke="#a86a42" stroke-width="2"/>
+ <path d="M580 82H660L647 103H597Z" fill="#a86a42"/>
+ <text x="574" y="64" class="p">+56 · 3条</text>
+ <text x="20" y="150" class="small">网位从抛出到回船一直占用；回船时统一计分。时序为设计初值。</text>
+</g>
+<g transform="translate(447 339)">
+ <rect width="711" height="187" rx="18" class="box"/>
+ <text x="20" y="34" class="h">一网的结果应当有差异</text>
+ <text x="24" y="75" class="p">空网</text><text x="172" y="75" class="p">1–2 条</text><text x="343" y="75" class="p">3–4 条</text><text x="522" y="75" class="p">5–6 条</text>
+ <text x="24" y="108" class="small">看懂失手原因</text><text x="172" y="108" class="small">稳定的小收获</text><text x="343" y="108" class="small">判断带来回报</text><text x="522" y="108" class="small">偶发丰收高潮</text>
+ <text x="24" y="151" class="p">不是抽取收获档位：鱼的位置、网口、时机与容量决定结果。</text>
+</g>
+<g transform="translate(447 550)">
+ <rect width="711" height="225" rx="18" class="box"/>
+ <text x="20" y="35" class="h">变化从哪里来</text>
+ <text x="20" y="72" class="p">紧密群 / 疏散群 / 交错群 / 快速单鱼 / 稀有鱼机会</text>
+ <text x="20" y="108" class="p">观察方向与深度 → 选择位置和提前量 → 松手选水层，留网给下一群</text>
+ <text x="20" y="145" class="p">90 秒一趟，最多三网在途，一次控一网，网兜六格。</text>
+ <text x="20" y="180" class="small">首版不靠鱼群反击、随机拒收、连爆或强化掉落制造变化。</text>
+ <text x="20" y="207" class="small">v0.3规则示意；画质看概念图。手感、收获分布需原型验证。</text>
+</g>
+</svg>
