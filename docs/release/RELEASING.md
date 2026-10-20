@@ -37,6 +37,8 @@ python .codex/skills/minitool-zip-builder/scripts/audit_artifact.py 琉璃海湾
 - 文档ZIP：README、PRD/TDD、当前规格、架构、开发/发布/安全/素材说明和设计资料；不是游戏执行包。
 - `SHA256SUMS.txt`：上述附件的SHA-256、精确文件名。
 
+GitHub会清理非ASCII附件名，Release统一使用 `glasswater-cove-v版本-browser.zip`、`-minitool.zip`、`-documents.zip`；本地中文构建名仅是别名，校验文件必须使用实际下载名。
+
 用当前稳定提交创建不可移动的版本标签。当前v0.4.1作为预发布保存；Release正文说明范围、验证来源、待测环境和两种ZIP用途。附件上传后核对平台记录的文件名、大小及digest；需要时重新下载到临时目录计算哈希并比对，再清理临时文件。不要用新的内容悄悄覆盖已发布版本。
 
 ## 后续升级与回退

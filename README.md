@@ -75,7 +75,7 @@ npm run package:minitool
 | `dist-minitool/`、`琉璃海湾-v0.4.1-小红书上传包.zip` | 小红书容器专用构建，裁掉受限浏览器能力 |
 | `docs/release/minitool-v0.4.1-audit.json` | 容器包文件、体积、哈希和检查范围 |
 
-源码分支不保存依赖或构建目录。直接下载的ZIP、文档包与SHA-256校验文件见 [Releases](https://github.com/zhuxian518/glasswater-cove/releases)。两个游戏ZIP用途不同，请勿互换。ZIP时间戳可能使重新打包的整包哈希不同，冻结附件以Release校验值为准。
+源码分支不保存依赖或构建目录。直接下载的ZIP、文档包与SHA-256校验文件见 [Releases](https://github.com/zhuxian518/glasswater-cove/releases)。Release附件使用英文文件名：`glasswater-cove-v0.4.1-browser.zip`、`glasswater-cove-v0.4.1-minitool.zip`、`glasswater-cove-v0.4.1-documents.zip`，分别对应浏览器、小红书和文档。两个游戏ZIP用途不同，请勿互换。ZIP时间戳可能使重新打包的整包哈希不同，冻结附件以Release校验值为准。
 
 本地49项自动测试覆盖模拟、计分、单网、容量、图鉴、成长、旧存档兼容和模拟SDK存储。容器包于2026-10-12按用户指定的官方 `minitool-zip-builder` 1.7.0 检查，目录和ZIP均通过。2026-10-20仓库归档验证见[发布记录](docs/release/v0.4.1.md)。上传前仍需核对当时上传页规范，完成平台模拟器及Android/iOS真机扫码验证。
 
